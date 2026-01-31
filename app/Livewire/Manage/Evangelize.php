@@ -4,7 +4,7 @@ namespace App\Livewire\Manage;
 
 use App\Models\Ministry;
 use App\Models\Event;
-use Illuminate\Support\Facades\Url;
+use Illuminate\Support\Facades\URL;
 use App\Models\ManageFollowUp;
 
 use Livewire\Component;
