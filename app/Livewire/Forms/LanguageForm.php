@@ -11,6 +11,7 @@ use Flux\Flux;
 use Illuminate\Database\Query\Builder;
 use Livewire\Form;
 use DeepL\Translator;
+use DeepL\DeepLClient;
 
 class LanguageForm extends Form
 {
@@ -60,7 +61,7 @@ class LanguageForm extends Form
     public function addLanguage() {
         $this->validateOnly('name');
 
-        $translator = new \DeepL\DeeplClient(env('DEEPL_KEY'));
+        $translator = new DeepLClient(env('DEEPL_KEY'));
         $german_name = $translator->translateText($this->name, null, 'DE');
         $english_name = $translator->translateText($this->name, null, 'EN-US');
         

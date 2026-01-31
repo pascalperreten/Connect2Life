@@ -166,7 +166,7 @@
             </form>
         </flux:card>
     @endif
-    @if ($this->newForeignContacts)
+    @if (!$this->newForeignContacts->isEmpty())
 
         <flux:heading size="lg" class=" border px-2 py-4 rounded text-center">
             {{ __('Contacts from another City!') }}
