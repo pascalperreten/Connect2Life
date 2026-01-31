@@ -1,0 +1,86 @@
+<div>
+    <flux:modal.trigger name="edit-{{ $contact->id }}">
+        <flux:button class="cursor-pointer" icon:trailing="cog-8-tooth" />
+    </flux:modal.trigger>
+
+    <flux:modal wire:key="{{ $contact->id }}" name="edit-{{ $contact->id }}" class="text-left">
+        <div class="space-y-4">
+            <flux:heading size="xl">{{ $contact->name }}</flux:heading>
+            <flux:separator />
+
+            <form class="space-y-6">
+                <flux:heading size="lg">{{ __('Get in touch') }}</flux:heading>
+
+                <flux:radio.group wire:model.lazy="form.invalid_contact_details"
+                    label="{{ __('Contact details correct') }}" variant="cards" class="max-sm:flex-col">
+                    <flux:radio :value="0" label="{{ __('Yes') }}"
+                        description="{{ __('Were you able to reach the person using the contact details provided?') }}" />
+                    <flux:radio :value="1" label="{{ __('No') }}"
+                        description="{{ __('Were the contact details incorrect and you were unable to get in touch?') }}" />
+                </flux:radio.group>
+                @if (!$this->form->met && !$this->form->not_interested)
+                @endif
+
+                @if (!$this->form->invalid_contact_details)
+                    <flux:field>
+                        <flux:label>{{ 'Contacted' }}</flux:label>
+                        <flux:description>{{ __('When did you get in touch?') }}</flux:description>
+                        <div class="flex">
+                            <flux:date-picker locale="{{ app()->getLocale() }}" with-today
+                                placeholder="{{ __('Select Date') }}" class="flex-grow"
+                                wire:model.lazy="form.contacted_date" />
+                            @if ($this->form->contacted_date)
+                                <flux:button wire:click="resetContacted">{{ __('Reset') }}</flux:button>
+                            @endif
+
+
+                        </div>
+                        <flux:error name="form.contacted_date" />
+                    </flux:field>
+
+                    @if ($this->form->contacted_date)
+                        <flux:field>
+                            <flux:label>{{ __('Meeting') }}</flux:label>
+
+                            @if (!$this->form->not_interested)
+                                <flux:description>{{ __('When do you want to meet?') }}</flux:description>
+                                <div class="flex">
+                                    <flux:date-picker locale="{{ app()->getLocale() }}"
+                                        placeholder="{{ __('Select Date') }}" with-today
+                                        :min="$this->form->contacted_date->format('Y-m-d')" class="flex-grow"
+                                        wire:model.lazy="form.meeting_date" />
+                                    @if (isset($this->form->meeting_date))
+                                        <flux:button wire:click="resetMeeting">{{ __('Reset') }}</flux:button>
+                                    @endif
+
+                                </div>
+                            @endif
+                            <flux:error name="form.meeting_date" />
+                        </flux:field>
+                        @if (!$this->form->met)
+                            <flux:checkbox.group variant="cards">
+                                <flux:checkbox wire:model.lazy="form.not_interested"
+                                    label="{{ __('Does not want to meet') }}"
+                                    description="{{ __('You got in touch with the person, but the person is not interested in meeting up with you?') }}" />
+                            </flux:checkbox.group>
+                        @endif
+                    @endif
+
+                    @if ($this->form->meeting_date && !$this->form->not_interested)
+                        <flux:checkbox.group variant="cards">
+                            <flux:checkbox wire:model.lazy="form.met" label="{{ __('Met') }}"
+                                description="{{ __('Did you meet up with that person?') }}" />
+                        </flux:checkbox.group>
+                        @if ($this->form->met)
+                            <flux:checkbox.group variant="cards">
+                                <flux:checkbox wire:model.lazy="form.part_of_church" label="{{ __('Part of Church') }}"
+                                    description="{{ __('Did you meet up with that person?') }}" />
+                            </flux:checkbox.group>
+                        @endif
+                    @endif
+
+                @endif
+            </form>
+        </div>
+    </flux:modal>
+</div>

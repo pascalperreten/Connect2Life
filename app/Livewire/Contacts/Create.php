@@ -1,0 +1,118 @@
+<?php
+
+namespace App\Livewire\Contacts;
+
+use Livewire\Component;
+use Livewire\Attributes\Layout;
+use App\Livewire\Forms\ContactForm;
+use App\Livewire\Forms\DistrictForm;
+use App\Livewire\Forms\LanguageForm;
+use App\Livewire\Forms\PostalCodeForm;
+use App\Models\Event;
+use App\Models\Church;
+use App\Models\Ministry;
+use App\Models\Decision;
+use Flux\Flux;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Crypt;
+use Livewire\Attributes\Validate;
+use Livewire\Attributes\On;
+use Illuminate\Support\Arr;
+
+
+class Create extends Component
+{
+
+    public ContactForm $form;
+    public DistrictForm $district_form;
+    public LanguageForm $language_form;
+    public PostalCodeForm $postal_code_form;
+
+    public Event $event;
+    public Ministry $ministry;
+    public ?Church $church = null;
+
+    public $with_contact = true;
+
+    public $success_message = '';
+
+    public int $page = 0;
+
+    public function mount(Ministry $ministry, Event $event, Church $church = null) {
+        $this->ministry = $ministry;
+        $this->event = $event;
+        $this->church = $church;
+        $this->language_form->setLanguages($this->event);
+        $this->district_form->setDistricts($this->event);
+        $this->postal_code_form->setPostalCodes($this->event);
+
+        $this->form->setContactForm($this->event);
+
+    }
+
+    public function newContact() {
+        $this->success_message = '';
+    }
+
+    public function test() {
+        dd($this->form->language);
+    }  
+
+    public function nextPage() {
+        $this->form->validateNext($this->page);
+        $this->page++;
+    }
+
+    public function lastPage() {
+        $this->page--;
+    }
+
+    public function resetNumbers() {
+        $this->reset('with_contact');
+    }
+
+    public function save() {
+        $this->form->create($this->event, $this->church);
+        $this->district_form->name = '';
+        $this->postal_code_form->name = '';
+        $this->form->setContactForm($this->event);
+        $this->page = 0;
+        $this->success_message=__('Contact added');
+    }
+    public function addDecisions() {
+        $this->form->addDecisions($this->event);
+        $this->form->setContactForm($this->event);
+        $this->page = 0;
+        $this->success_message=__('Decisions added');
+    }
+
+    public function createDistrict()
+    {
+        $this->district_form->event = $this->event;
+        $newDistrict = $this->district_form->create();
+        $this->district_form->setDistricts($this->event);
+        $this->form->districts[] = $newDistrict->id;
+        $this->form->district = $newDistrict->id;
+    }
+
+    public function createLanguage()
+    {
+        $this->language_form->event = $this->event;
+        $newLanguage = $this->language_form->addLanguage();
+        $this->language_form->setLanguages($this->event);
+        $this->form->language[] = $newLanguage->id;
+    }
+
+    public function createPostalCode() {
+        $this->postal_code_form->event = $this->event;
+        $newPostalCode = $this->postal_code_form->addPostalCode();
+        $this->postal_code_form->setPostalCodes($this->event);
+        $this->form->postal_codes[] = $newPostalCode->id;
+        $this->form->postal_code = $newPostalCode->id;
+    }
+
+    public function render()
+    {
+        return view('livewire.contacts.create');
+    }
+}
