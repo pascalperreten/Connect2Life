@@ -124,14 +124,14 @@ new class extends Component {
 
     {{-- Make table full width --}}
     {{-- <div class="xl:w-screen mt-8 xl:max-w-[calc(100vw-17px)] xl:px-10 left-1/2 relative -translate-x-1/2"> --}}
-    <div class="mt-6">
+    <div class="mt-6 space-y-6">
         <div class="flex justify-between items-center">
             <flux:heading size="lg">{{ __('Contacts') }}</flux:heading>
         </div>
         @if ($this->contacts->isEmpty())
             <flux:text class="mt-4">{{ __('No contacts have been added to this church yet.') }}</flux:text>
         @else
-            <div class="p-6 shadow-md bg-white">
+            <flux:card>
                 <flux:table>
                     <flux:table.columns>
                         <flux:table.column>{{ __('Date') }}</flux:table.column>
@@ -393,7 +393,7 @@ new class extends Component {
                         @endforeach
                     </flux:table.rows>
                 </flux:table>
-            </div>
+            </flux:card>
 
         @endif
     </div>

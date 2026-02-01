@@ -31,6 +31,14 @@ new class extends Component {
                             icon:variant="outline" />
                     </span>
                     <div x-show="open">
+                        @can('view', $this->event)
+                            <flux:navlist.item wire:navigate
+                                href="{{ route('churches.index', [$this->ministry, $this->event]) }}">
+                                <i class="fa-solid fa-arrow-left mr-2"></i>
+                                {{ __('Churches') }}
+                            </flux:navlist.item>
+                        @endcan
+
                         <flux:navlist.item wire:navigate
                             href="{{ route('churches.show', [$this->ministry, $this->event, $this->church]) }}">
                             <i class="fa-solid fa-cross mr-2"></i>
@@ -52,26 +60,24 @@ new class extends Component {
 
                     <div x-show="!open">
 
-                        <flux:tooltip content="{{ $church->name }}">
+                        @can('view', $this->event)
                             <flux:navlist.item wire:navigate
-                                href="{{ route('churches.show', [$this->ministry, $this->event, $church]) }}">
-                                <i class="fa-solid fa-cross text-lg"></i>
+                                href="{{ route('churches.index', [$this->ministry, $this->event]) }}">
+                                <i class="fa-solid fa-arrow-left text-lg"></i>
                             </flux:navlist.item>
-                        </flux:tooltip>
-
-                        <flux:tooltip content="{{ __('Members') }}">
-                            <flux:navlist.item wire:navigate
-                                href="{{ route('churches.members', [$this->ministry, $this->event, $church]) }}">
-                                <i class="fa-regular fa-users text-lg"></i>
-                            </flux:navlist.item>
-                        </flux:tooltip>
-
-                        <flux:tooltip content="{{ __('Edit') }}">
-                            <flux:navlist.item wire:navigate
-                                href="{{ route('churches.manage', [$this->ministry, $this->event, $church]) }}">
-                                <i class="fa-regular fa-gear text-lg"></i>
-                            </flux:navlist.item>
-                        </flux:tooltip>
+                        @endcan
+                        <flux:navlist.item wire:navigate
+                            href="{{ route('churches.show', [$this->ministry, $this->event, $church]) }}">
+                            <i class="fa-solid fa-cross text-lg"></i>
+                        </flux:navlist.item>
+                        <flux:navlist.item wire:navigate
+                            href="{{ route('churches.members', [$this->ministry, $this->event, $church]) }}">
+                            <i class="fa-regular fa-users text-lg"></i>
+                        </flux:navlist.item>
+                        <flux:navlist.item wire:navigate
+                            href="{{ route('churches.manage', [$this->ministry, $this->event, $church]) }}">
+                            <i class="fa-regular fa-gear text-lg"></i>
+                        </flux:navlist.item>
                     </div>
                 </flux:navlist>
             </div>
@@ -79,6 +85,11 @@ new class extends Component {
                 class="fixed max-w-full overflow-x-auto sm:hidden flex justify-center bottom-0 left-0 right-0 bg-white dark:bg-zinc-900 w-full z-20 border-t-2 border-cyan-700 p-2">
 
                 <flux:navbar>
+                    @can('view', $this->event)
+                        <flux:navbar.item wire:navigate href="{{ route('churches.index', [$this->ministry, $this->event]) }}">
+                            <i class="text-2xl fa-solid fa-arrow-left"></i>
+                        </flux:navbar.item>
+                    @endcan
                     <flux:navbar.item wire:navigate
                         href="{{ route('churches.show', [$this->ministry, $this->event, $church]) }}">
                         <i class="text-2xl fa-solid fa-cross"></i>

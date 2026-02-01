@@ -58,46 +58,29 @@ new class extends Component {
                             <i class="fa-regular fa-gear mr-2"></i>
                             {{ __('Manage') }}
                         </flux:navlist.item>
-                        <flux:navlist.item wire:navigate
-                            href="{{ route('events.details', [$this->ministry, $this->event]) }}">
-                            <i class="fa-regular fa-pen-to-square mr-2"></i>
-                            {{ __('Manage') }}
-                        </flux:navlist.item>
                     </div>
 
                     <div x-show="!open">
 
-                        <flux:tooltip content="{{ $event->ministry->name }}">
-                            <flux:navlist.item wire:navigate href="{{ route('events.index', $this->ministry) }}">
-                                <i class="text-lg fa-regular fa-arrow-left"></i>
-                            </flux:navlist.item>
-                        </flux:tooltip>
-                        <flux:tooltip content="{{ $event->name }} | {{ $event->city }}">
-                            <flux:navlist.item wire:navigate
-                                href="{{ route('events.show', [$this->ministry, $this->event]) }}">
-                                <i class="text-lg fa-solid fa-microphone-stand"></i>
-                            </flux:navlist.item>
-                        </flux:tooltip>
-                        <flux:tooltip content="{{ __('Churches') }}">
-                            <flux:navlist.item wire:navigate
-                                href="{{ route('churches.index', [$this->ministry, $this->event]) }}">
-                                <i class="text-lg fa-regular fa-cross"></i>
-                            </flux:navlist.item>
-                        </flux:tooltip>
-
-                        <flux:tooltip content="{{ __('Contacts') }}">
-                            <flux:navlist.item wire:navigate
-                                href="{{ route('contacts.index', [$this->ministry, $this->event]) }}">
-                                <i class="text-lg fa-regular fa-user"></i>
-                            </flux:navlist.item>
-                        </flux:tooltip>
-
-                        <flux:tooltip content="{{ __('Manage') }}">
-                            <flux:navlist.item wire:navigate
-                                href="{{ route('events.manage', [$this->ministry, $this->event]) }}">
-                                <i class="text-lg fa-regular fa-gear"></i>
-                            </flux:navlist.item>
-                        </flux:tooltip>
+                        <flux:navlist.item wire:navigate href="{{ route('events.index', $this->ministry) }}">
+                            <i class="text-lg fa-regular fa-arrow-left"></i>
+                        </flux:navlist.item>
+                        <flux:navlist.item wire:navigate
+                            href="{{ route('events.show', [$this->ministry, $this->event]) }}">
+                            <i class="text-lg fa-solid fa-microphone-stand"></i>
+                        </flux:navlist.item>
+                        <flux:navlist.item wire:navigate
+                            href="{{ route('churches.index', [$this->ministry, $this->event]) }}">
+                            <i class="text-lg fa-regular fa-cross"></i>
+                        </flux:navlist.item>
+                        <flux:navlist.item wire:navigate
+                            href="{{ route('contacts.index', [$this->ministry, $this->event]) }}">
+                            <i class="text-lg fa-regular fa-user"></i>
+                        </flux:navlist.item>
+                        <flux:navlist.item wire:navigate
+                            href="{{ route('events.manage', [$this->ministry, $this->event]) }}">
+                            <i class="text-lg fa-regular fa-gear"></i>
+                        </flux:navlist.item>
                     </div>
                 </flux:navlist>
             </div>

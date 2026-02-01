@@ -17,7 +17,10 @@
                         {{ $this->event->name }} - {{ $this->event->city }}
                     </flux:breadcrumbs.item>
 
-                    <flux:breadcrumbs.item>{{ $this->church->name }}</flux:breadcrumbs.item>
+                    <flux:breadcrumbs.item
+                        href="{{ route('churches.show', [$this->ministry, $this->event, $this->church]) }}" wire:navigate>
+                        {{ $this->church->name }}
+                    </flux:breadcrumbs.item>
                 </flux:breadcrumbs>
             </div>
             <flux:separator />

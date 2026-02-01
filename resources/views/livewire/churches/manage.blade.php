@@ -7,21 +7,17 @@
         <div>
             <flux:breadcrumbs>
                 @can('view', $this->ministry)
-                    <flux:breadcrumbs.item href="{{ route('events.index', $this->ministry) }}" wire:navigate>Events
+                    <flux:breadcrumbs.item href="{{ route('ministry', $this->ministry) }}" wire:navigate>
+                        {{ $this->ministry->name }}
                     </flux:breadcrumbs.item>
                     <flux:breadcrumbs.item href="{{ route('events.show', [$this->ministry, $this->event]) }}" wire:navigate>
                         {{ $this->event->name }} - {{ $this->event->city }}
-                    </flux:breadcrumbs.item>
-                    <flux:breadcrumbs.item href="{{ route('churches.index', [$this->ministry, $this->event]) }}"
-                        wire:navigate>
-                        Kirchen
                     </flux:breadcrumbs.item>
                 @endcan
                 <flux:breadcrumbs.item
                     href="{{ route('churches.show', [$this->ministry, $this->event, $this->church]) }}" wire:navigate>
                     {{ $this->church->name }}
                 </flux:breadcrumbs.item>
-                <flux:breadcrumbs.item>Verwalten</flux:breadcrumbs.item>
             </flux:breadcrumbs>
 
         </div>

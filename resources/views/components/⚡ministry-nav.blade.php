@@ -33,43 +33,36 @@ new class extends Component {
                         <i class="fa-regular fa-house mr-2"></i>
                         {{ $this->ministry->name }}
                     </flux:navlist.item>
-                    <flux:tooltip x-show="!open" content="{{ $this->ministry->name }}">
-                        <flux:navlist.item wire:navigate href="{{ route('ministry', $this->ministry) }}">
-                            <i class="text-lg fa-regular fa-house"></i>
-                        </flux:navlist.item>
-                    </flux:tooltip>
+                    <flux:navlist.item x-show="!open" wire:navigate href="{{ route('ministry', $this->ministry) }}">
+                        <i class="text-lg fa-regular fa-house"></i>
+                    </flux:navlist.item>
 
                     <flux:navlist.item wire:navigate x-show="open" href="{{ route('events.index', $this->ministry) }}">
                         <i class="fa-regular fa-microphone-stand mr-2"></i>
                         Events
                     </flux:navlist.item>
 
-                    <flux:tooltip x-show="!open" content="Events">
-                        <flux:navlist.item wire:navigate href="{{ route('events.index', $this->ministry) }}">
-                            <i class="text-lg fa-regular fa-microphone-stand"></i>
-                        </flux:navlist.item>
-                    </flux:tooltip>
+                    <flux:navlist.item x-show="!open" wire:navigate href="{{ route('events.index', $this->ministry) }}">
+                        <i class="text-lg fa-regular fa-microphone-stand"></i>
+                    </flux:navlist.item>
 
                     <flux:navlist.item wire:navigate x-show="open" href="{{ route('ministry.members', $this->ministry) }}">
                         <i class="fa-regular fa-users mr-2"></i>
                         {{ __('Members') }}
                     </flux:navlist.item>
-                    <flux:tooltip x-show="!open" content="{{ __('Members') }}">
-                        <flux:navlist.item wire:navigate href="{{ route('ministry.members', $this->ministry) }}">
-                            <i class="text-lg fa-regular fa-users"></i>
-                        </flux:navlist.item>
-                    </flux:tooltip>
+                    <flux:navlist.item x-show="!open" wire:navigate href="{{ route('ministry.members', $this->ministry) }}">
+                        <i class="text-lg fa-regular fa-users"></i>
+                    </flux:navlist.item>
 
                     <flux:navlist.item wire:navigate x-show="open"
                         href="{{ route('ministry.details', $this->ministry) }}">
                         <i class="fa-regular fa-pen-to-square mr-2"></i>
                         {{ __('Edit') }}
                     </flux:navlist.item>
-                    <flux:tooltip x-show="!open" content="{{ __('Edit') }}">
-                        <flux:navlist.item wire:navigate href="{{ route('ministry.details', $this->ministry) }}">
-                            <i class="text-lg fa-regular fa-pen-to-square"></i>
-                        </flux:navlist.item>
-                    </flux:tooltip>
+                    <flux:navlist.item x-show="!open" wire:navigate
+                        href="{{ route('ministry.details', $this->ministry) }}">
+                        <i class="text-lg fa-regular fa-pen-to-square"></i>
+                    </flux:navlist.item>
                 </flux:navlist>
             </div>
             <div
