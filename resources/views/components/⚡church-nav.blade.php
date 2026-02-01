@@ -76,7 +76,7 @@ new class extends Component {
                 </flux:navlist>
             </div>
             <div
-                class="fixed max-w-full overflow-x-auto sm:hidden flex justify-center bottom-0 left-0 right-0 bg-white dark:bg-stone-800 w-full z-20 border-t-2 border-cyan-700 p-2">
+                class="fixed max-w-full overflow-x-auto sm:hidden flex justify-center bottom-0 left-0 right-0 bg-white dark:bg-zinc-900 w-full z-20 border-t-2 border-cyan-700 p-2">
 
                 <flux:navbar>
                     <flux:navbar.item wire:navigate

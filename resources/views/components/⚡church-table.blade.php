@@ -38,7 +38,7 @@ new class extends Component {
 
 <div>
     <flux:table>
-        <flux:table.columns sticky class="bg-white dark:bg-zinc-900">
+        <flux:table.columns sticky>
             <flux:table.column>Name</flux:table.column>
             <flux:table.column>Adresse</flux:table.column>
             <flux:table.column>Pastor</flux:table.column>
@@ -144,10 +144,12 @@ new class extends Component {
                         @endif
                     </flux:table.cell>
                     @can('view', $church)
-                        <flux:table.cell class="text-end flex items-center gap-2 justify-end">
-                            <a href="{{ route('churches.show', [$ministry, $event, $church]) }}" wire:navigate>
-                                <flux:icon.arrow-right-circle />
-                            </a>
+                        <flux:table.cell>
+                            <div class="flex justify-end">
+                                <a href="{{ route('churches.show', [$ministry, $event, $church]) }}" wire:navigate>
+                                    <flux:icon.arrow-right-circle />
+                                </a>
+                            </div>
                         </flux:table.cell>
                     @endcan
                 </flux:table.row>
