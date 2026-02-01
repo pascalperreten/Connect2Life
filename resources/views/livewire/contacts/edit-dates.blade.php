@@ -38,26 +38,24 @@
                         <flux:error name="form.contacted_date" />
                     </flux:field>
 
-                    @if ($this->form->contacted_date)
+                    @if (isset($this->form->contacted_date))
                         <flux:field>
                             <flux:label>{{ __('Meeting') }}</flux:label>
 
-                            @if (!$this->form->not_interested)
-                                <flux:description>{{ __('When do you want to meet?') }}</flux:description>
-                                <div class="flex">
-                                    <flux:date-picker locale="{{ app()->getLocale() }}"
-                                        placeholder="{{ __('Select Date') }}" with-today
-                                        :min="$this->form->contacted_date->format('Y-m-d')" class="flex-grow"
-                                        wire:model.lazy="form.meeting_date" />
-                                    @if (isset($this->form->meeting_date))
-                                        <flux:button wire:click="resetMeeting">{{ __('Reset') }}</flux:button>
-                                    @endif
+                            <flux:description>{{ __('When do you want to meet?') }}</flux:description>
+                            <div class="flex">
+                                <flux:date-picker locale="{{ app()->getLocale() }}"
+                                    placeholder="{{ __('Select Date') }}" with-today
+                                    :min="$this->form->contacted_date->format('Y-m-d')" class="flex-grow"
+                                    wire:model.lazy="form.meeting_date" />
+                                @if (isset($this->form->meeting_date))
+                                    <flux:button wire:click="resetMeeting">{{ __('Reset') }}</flux:button>
+                                @endif
 
-                                </div>
-                            @endif
+                            </div>
                             <flux:error name="form.meeting_date" />
                         </flux:field>
-                        @if (!$this->form->met)
+                        @if (!$this->form->met && !isset($this->form->meeting_date))
                             <flux:checkbox.group variant="cards">
                                 <flux:checkbox wire:model.lazy="form.not_interested"
                                     label="{{ __('Does not want to meet') }}"

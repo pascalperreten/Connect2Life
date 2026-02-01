@@ -261,12 +261,12 @@ class ContactForm extends Form
         }
     }
 
-    public function meetingToday() {
-        $this->meeting_date = Carbon::today();
-        $this->validateOnly('meeting_date');
-        $this->contact->update(['meeting_date' => $this->meeting_date]);
-        $this->setContact($this->contact);
-    }
+    // public function meetingToday() {
+    //     $this->meeting_date = Carbon::today();
+    //     $this->validateOnly('meeting_date');
+    //     $this->contact->update(['meeting_date' => $this->meeting_date]);
+    //     $this->setContact($this->contact);
+    // }
 
     protected $rules =  [
             'name' => 'required|string|max:255',

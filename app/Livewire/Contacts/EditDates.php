@@ -28,7 +28,10 @@ class EditDates extends Component
     }
 
     public function resetMeeting() {
-        $this->contact->update(['meeting_date' => null]);
+        $this->contact->update([
+            'meeting_date' => null,
+            'met' => false,
+            ]);
         $this->form->setContact($this->contact);
         $this->resetErrorBag('form.meeting_date');
         $this->dispatch('updated');
