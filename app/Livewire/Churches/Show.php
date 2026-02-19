@@ -30,7 +30,7 @@ class Show extends Component
     if (session()->has('success')) {
             Flux::toast(
                 heading: session('success'),
-                text: __('Your changes have been saved.'),
+                text: __('Your changes have been saved successfully.'),
                 variant: 'success',
             );
         }

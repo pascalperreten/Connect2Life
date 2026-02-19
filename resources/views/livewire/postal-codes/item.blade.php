@@ -4,7 +4,7 @@
 
         <x-slot name="iconTrailing">
             @if (!array_key_exists('postal_code', $this->form->edit) || $this->form->edit['postal_code'] !== $postal_code->id)
-                <flux:tooltip content="Bearbeiten">
+                <flux:tooltip content="{{ __('Edit') }}">
                     <flux:button wire:click="editItem({{ $postal_code->id }})" size="sm" variant="subtle"
                         icon="pencil-square" class="-mr-1" />
                 </flux:tooltip>
@@ -15,7 +15,7 @@
         </x-slot>
     </flux:input>
     <flux:modal.trigger :name="'delete-postal_code-' . $postal_code->id">
-        <flux:tooltip content="Löschen">
+        <flux:tooltip content="{{ __('Delete') }}">
             <flux:button icon="x-mark" variant="primary" color="red" class="cursor-pointer" />
         </flux:tooltip>
     </flux:modal.trigger>
@@ -23,19 +23,19 @@
     <flux:modal :name="'delete-postal_code-' . $postal_code->id" class="min-w-[22rem]">
         <div class="space-y-6">
             <div>
-                <flux:heading size="lg">Postleitzahl löschen?</flux:heading>
+                <flux:heading size="lg">{{ __('Delete Postal Code') }}?</flux:heading>
                 <flux:text class="mt-2">
-                    Du bist dran diese Postleitzahl zu löschen.<br>
-                    Dies kann nicht rückgängig gemacht werden.
+                    {{ __('You are about to delete this postal code.') }}<br>
+                    {{ __('This action cannot be undone.') }}
                 </flux:text>
             </div>
             <div class="flex gap-2">
                 <flux:spacer />
                 <flux:modal.close>
-                    <flux:button variant="ghost">Abbrechen</flux:button>
+                    <flux:button variant="ghost">{{ __('Cancel') }}</flux:button>
                 </flux:modal.close>
                 <flux:button wire:click="deletePostalCode({{ $postal_code->id }})" variant="danger">
-                    Postleitzahl löschen</flux:button>
+                    {{ __('Delete Postal Code') }}</flux:button>
             </div>
         </div>
     </flux:modal>

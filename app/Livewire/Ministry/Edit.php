@@ -42,8 +42,8 @@ class Edit extends Component
         $this->modal('delete-logo')->close();
 
         Flux::toast(
-            heading: 'Logo gelöscht',
-            text: 'Deine Änderungen wurden erfolgreich gespeichert.',
+            heading: __('Logo deleted'),
+            text: __('The logo has been deleted successfully.'),
             variant: 'success',
         );
     }
@@ -74,20 +74,25 @@ class Edit extends Component
         $path = '';
         if($this->logo) {
             $path = $this->logo->store('images', 'public');
+            $name = $this->logo->getClientOriginalName();
+        } else {
+            $path = $this->currentLogoPath;
+            $name = $this->currentLogoName;
         }
         
         $this->ministry->update([
             'name' => $this->name,
             'logo_path' => $path,
-            'logo_name' => $this->logo->getClientOriginalName(),
+            'logo_name' => $name,
         ]);
-        Flux::toast(
-            heading: 'Ministry geändert',
-            text: 'Deine Änderungen wurden erfolgreich gespeichert.',
-            variant: 'success',
-        );
+        
         $this->setMinistry();
         $this->logo = null;
+        Flux::toast(
+            heading: __('Ministry updated'),
+            text: __('Your changes have been saved successfully.'),
+            variant: 'success',
+        );
     }
 
     public function delete() {

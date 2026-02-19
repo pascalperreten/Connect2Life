@@ -89,12 +89,14 @@ Route::middleware(['set.locale'])->group(function () {
             Route::livewire('members', MinistryMembers::class)->name('ministry.members')->can('update', 'ministry');
             Route::livewire('events', EventIndex::class)->name('events.index');
             Route::livewire('events/create', EventCreate::class)->name('events.create')->can('update', 'ministry');
+            Route::livewire('stats', 'pages::ministry.stats')->name('ministry.stats')->can('update', 'ministry');
         });
             
         Route::prefix('{event}')->group(function() {
             Route::middleware(['redirect.event', 'can:view,event'])->group(function() {
                 Route::livewire('/', EventShow::class)->name('events.show');
                 Route::livewire('manage', EventManage::class)->name('events.manage')->can('update', 'event');
+                Route::livewire('stats', 'pages::event.stats')->name('events.stats');
                 Route::livewire('details', EventEdit::class)->name('events.details')->can('update', 'event');
                 Route::livewire('contacts', ContactIndex::class)->name('contacts.index');
                 Route::livewire('contacts/{contact}', ContactShow::class)->name('contacts.show');

@@ -46,8 +46,8 @@ class DistrictForm extends Form
             'name' => $this->name,
         ]);
         Flux::toast(
-            heading: 'District added',
-            text: 'The district has been added successfully.',
+            heading: __('District added'),
+            text: __('The district has been added successfully.'),
             variant: 'success',
         );
         $this->setDistricts($this->event);
@@ -69,8 +69,8 @@ class DistrictForm extends Form
             'name' => $this->name,
         ]);
         Flux::toast(
-            heading: 'District updated',
-            text: 'The district has been updated successfully.',
+            heading: __('District updated'),
+            text: __('The district has been updated successfully.'),
             variant: 'success',
         );
         $this->edit = [];
@@ -80,8 +80,8 @@ class DistrictForm extends Form
         District::where('id', $id)->delete();
         Flux::modals()->close();
         Flux::toast(
-            heading: 'District deleted',
-            text: 'The district has been deleted successfully.',
+            heading: __('District deleted'),
+            text: __('The district has been deleted successfully.'),
             variant: 'success',
         );
         $this->edit = [];

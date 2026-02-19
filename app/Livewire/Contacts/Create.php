@@ -36,7 +36,8 @@ class Create extends Component
 
     public $success_message = '';
 
-    public int $page = 0;
+    public bool $approved = false;
+    public bool $contact_selected = false;
 
     public function mount(Ministry $ministry, Event $event, Church $church = null) {
         $this->ministry = $ministry;
@@ -54,21 +55,21 @@ class Create extends Component
         $this->success_message = '';
     }
 
-    public function test() {
-        dd($this->form->language);
-    }  
-
     public function nextPage() {
-        $this->form->validateNext($this->page);
-        $this->page++;
+        $this->approved = true;
     }
 
     public function lastPage() {
-        $this->page--;
+        $this->approved = false;
     }
 
     public function resetNumbers() {
         $this->reset('with_contact');
+    }
+    public function resetContact() {
+        $this->approved = false;
+        $this->form->reset();
+        $this->form->setContactForm($this->event);
     }
 
     public function save() {
@@ -76,7 +77,7 @@ class Create extends Component
         $this->district_form->name = '';
         $this->postal_code_form->name = '';
         $this->form->setContactForm($this->event);
-        $this->page = 0;
+        $this->approved = false;
         $this->success_message=__('Contact added');
     }
     public function addDecisions() {
@@ -93,14 +94,6 @@ class Create extends Component
         $this->district_form->setDistricts($this->event);
         $this->form->districts[] = $newDistrict->id;
         $this->form->district = $newDistrict->id;
-    }
-
-    public function createLanguage()
-    {
-        $this->language_form->event = $this->event;
-        $newLanguage = $this->language_form->addLanguage();
-        $this->language_form->setLanguages($this->event);
-        $this->form->language[] = $newLanguage->id;
     }
 
     public function createPostalCode() {

@@ -45,8 +45,8 @@ class Create extends Component
             
             $this->modal('invite-member')->close();
             Flux::toast(
-                heading: 'Invitation Sent',
-                text: 'An invitation has been sent to the new member.',
+                heading: __('Invitation sent!'),
+                text: __('An invitation has been sent to the new member.'),
                 variant: 'success',
             );
         }

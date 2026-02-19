@@ -1,14 +1,7 @@
-<div class="space-y-4">
+<div class="space-y-6">
     <div class="space-y-4">
-        @if ($this->ministry->logo_path)
-            <div class="flex justify-center">
-                <div class="w-50">
-                    <img class="max-h-full max-w-full" src="{{ asset('storage/' . $this->ministry->logo_path) }}">
-                </div>
-            </div>
-        @else
-            <flux:heading size="xl">{{ $this->ministry->name }}</flux:heading>
-        @endif
+
+        <flux:heading size="xl">{{ $this->ministry->name }}</flux:heading>
         <x-partials.header heading="Dashboard" />
     </div>
     <livewire:ministry-nav :ministry="$this->ministry">
@@ -18,8 +11,8 @@
                     <flux:heading size="lg">{{ __('Overview') }} {{ $ministry->name }}</flux:heading>
                     <div class="flex justify-between items-center">
                         <flux:heading>{{ __('Decisions for Christ') }}</flux:heading>
-                        <flux:badge color="orange" size="lg">{{ $this->ministry->events->sum('decisions') }}
-                        </flux:badge>
+                        <flux:badge color="orange" size="lg">{{ $this->total_decisions }}</flux:badge>
+
                     </div>
                     <div class="flex justify-between items-center">
                         <flux:heading>{{ __('Contacts') }}</flux:heading>
@@ -32,12 +25,12 @@
                                 <flux:card wire:click="showEvent({{ $event }})" class="space-y-4 cursor-pointer">
 
                                     <div class="flex justify-between items-center">
-                                        <flux:heading>{{ $event->name }} {{ $event->city }}</flux:heading>
+                                        <flux:heading>{{ $event->name }} {{ __($event->city) }}</flux:heading>
                                     </div>
                                     <flux:separator />
                                     <div class="flex justify-between items-center">
                                         <flux:text>{{ __('Decisions') }}</flux:text>
-                                        <flux:badge color="orange">{{ $event->decisions }}</flux:badge>
+                                        <flux:badge color="orange">{{ $this->getDecisions($event) }}</flux:badge>
                                     </div>
                                     <div class="flex justify-between items-center">
                                         <flux:text>{{ __('Contacts') }}</flux:text>

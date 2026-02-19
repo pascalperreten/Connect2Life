@@ -8,16 +8,18 @@ use App\Models\Contact;
 use App\Models\Ministry;
 use App\Models\Event;
 use App\Models\Church;
+use App\Models\ManageFollowUp;
 use Illuminate\Database\Eloquent\Builder;
 use App\Notifications\ContactAdded;
+use Livewire\Attributes\On;
 
-class Assign extends Component
+class Test extends Component
 {
 
     public Event $event;
     public Ministry $ministry;
     public $class = '';
-    public $contact_church = [];
+    public $churchesWithContacts = [];
     public $plzChurches = [];
     public $districtChurches = [];
     public $languageChurches = [];
@@ -26,10 +28,16 @@ class Assign extends Component
     public $newContacts = [];
     public $newForeignContacts;
     public $withChurches = [];
+    public $form_fields;
+
+    protected $listeners = [
+        'church-assigned' => 'addChurchToContact',
+    ];
 
     
     public function mount(Ministry $ministry, Event $event) {
         $this->event = $event;
+        $this->form_fields = ManageFollowUp::where('event_id', $event->id)->first();
         $this->setNewContacts();
         $this->setNewForeignContacts();
     }
@@ -52,11 +60,6 @@ class Assign extends Component
 
     public function setNewContacts() {
         $this->newContacts =  Contact::where('assigned', false)->where('event_id', $this->event->id)->where('foreign_city', false)->get();
-        $this->contact_church = Contact::where('event_id', $this->event->id)
-        ->whereNotNull('church_id')
-        ->where('assigned', false)
-        ->pluck('church_id', 'id')
-        ->toArray();
     }
     public function setNewForeignContacts() {
         $this->newForeignContacts =  Contact::where('assigned', false)->where('event_id', $this->event->id)->where('foreign_city', true)->get();
@@ -103,31 +106,19 @@ class Assign extends Component
         return $churches;
     }
 
-    public function updateChurch() {
-        if(empty($this->contact_church)) {
-            return;
-        }
-        $churchesWithContacts = [];
-        
-        foreach ($this->newContacts as $contact) {
-            if(array_key_exists($contact->id, $this->contact_church)) {
-                
-                $contact->update([
-                    'church_id' => $this->contact_church[$contact->id],
-                    'assigned' => true,
-                ]);
-                $churchesWithContacts[] = $contact->church_id;
-                // $contact->church->followUpContact->notify(new ContactAdded($this->event->ministry, $this->event, $contact->church));
-            }
+    public function addChurchToContact($churchId) {
+        dd($churchId);
+        // $this->churchesWithContacts[] = $id;
+        // dd($this->churchesWithContacts);
+    }
 
-        }
-        
-        foreach(array_unique($churchesWithContacts) as $churchId) {
+    public function updateChurch() {
+
+        foreach(array_unique($this->churchesWithContacts) as $churchId) {
             $church = Church::findOrFail($churchId);
             if($church->followUpContact) {
                 $church->followUpContact->notify(new ContactAdded($this->event->ministry, $this->event, $church));
             }
-            
         }
 
         $this->setNewContacts();
@@ -140,7 +131,7 @@ class Assign extends Component
 
     public function render()
     {
-        return view('livewire.contacts.assign', [
+        return view('livewire.contacts.test', [
             'currentContact' => $this->currentContact,
             'contacts' => $this->newContacts,
             'class' => $this->class,

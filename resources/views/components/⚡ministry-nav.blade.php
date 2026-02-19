@@ -17,7 +17,7 @@ new class extends Component {
 <div>
     <div class="flex">
         @can('update', $this->ministry)
-            <div x-data="{ open: false }" class="sticky hidden sm:block mt-6 top-5 h-full border rounded p-2 mr-4">
+            <div x-data="{ open: false }" class="sticky hidden sm:block top-5 h-full border rounded p-2 mr-4">
                 <span class="text-center">
                     <flux:button x-on:click="open = true" class="p-4 cursor-pointer w-full" x-show="!open" size="xs"
                         variant="ghost" tooltip="{{ __('Open Sidebar') }}" icon="chevron-double-right"
@@ -63,6 +63,13 @@ new class extends Component {
                         href="{{ route('ministry.details', $this->ministry) }}">
                         <i class="text-lg fa-regular fa-pen-to-square"></i>
                     </flux:navlist.item>
+                    <flux:navlist.item wire:navigate x-show="open" href="{{ route('ministry.stats', $this->ministry) }}">
+                        <i class="fa-regular fa-chart-line mr-2"></i>
+                        {{ __('Edit') }}
+                    </flux:navlist.item>
+                    <flux:navlist.item x-show="!open" wire:navigate href="{{ route('ministry.stats', $this->ministry) }}">
+                        <i class="text-lg fa-regular fa-chart-line"></i>
+                    </flux:navlist.item>
                 </flux:navlist>
             </div>
             <div
@@ -84,11 +91,14 @@ new class extends Component {
                     <flux:navbar.item wire:navigate href="{{ route('ministry.details', $this->ministry) }}"><i
                             class="text-2xl fa-regular fa-pen-to-square"></i>
                     </flux:navbar.item>
+                    <flux:navbar.item wire:navigate href="{{ route('ministry.stats', $this->ministry) }}"><i
+                            class="text-2xl fa-regular fa-chart-line"></i>
+                    </flux:navbar.item>
                 </flux:navbar>
             </div>
         @endcan
 
-        <div class="max-w-full overflow-x-auto flex-1 mb-15 mt-6">
+        <div class="max-w-full overflow-x-auto flex-1 mb-15">
             <div>
                 {{ $slot }}
             </div>

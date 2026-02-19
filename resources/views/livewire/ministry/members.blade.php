@@ -1,14 +1,8 @@
-<div class="space-y-4">
+<div class="space-y-6">
     <div class="space-y-4">
-        @if ($this->ministry->logo_path)
-            <div class="flex justify-center">
-                <div class="w-50">
-                    <img class="max-h-full max-w-full" src="{{ asset('storage/' . $this->ministry->logo_path) }}">
-                </div>
-            </div>
-        @else
-            <flux:heading size="xl">{{ $this->ministry->name }}</flux:heading>
-        @endif
+
+        <flux:heading size="xl">{{ $this->ministry->name }}</flux:heading>
+
         <x-partials.header heading="Mitglieder" />
         @can('update', $this->ministry)
             <div>
@@ -31,8 +25,7 @@
                 </flux:tabs>
 
                 <flux:tab.panel name="members">
-                    <livewire:members.index wire:key="{{ count($this->members) }}" :members="$this->members"
-                        :ministry="$this->ministry" />
+                    <livewire:members.index wire:key="{{ count($this->members) }}" :members="$this->members" :ministry="$this->ministry" />
                 </flux:tab.panel>
                 <flux:tab.panel name="add-members">
                     <livewire:members.create :ministry="$this->ministry" title="{{ __('Add Member') }}" />

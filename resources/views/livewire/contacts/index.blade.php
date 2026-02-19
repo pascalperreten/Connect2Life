@@ -135,9 +135,9 @@
                                          </div>
                                      @else
                                          @if ($contact->assigned === true && !$contact->church_id)
-                                             test
+                                             <span class="text-red-500">!</span>
                                          @endif
-                                         <flux:badge size="sm" color="red">{{ __('pending') }}</flux:badge>
+                                         <flux:badge color="red">{{ __('pending') }}</flux:badge>
                                      @endif
                                  </flux:table.cell>
 

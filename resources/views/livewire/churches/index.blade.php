@@ -1,7 +1,7 @@
 <div class="space-y-6">
     <div class="space-y-4">
         <flux:heading size="xl">
-            Kirchen</flux:heading>
+            {{ __('Churches') }}</flux:heading>
 
         <x-partials.header heading="{{ $this->event->name . ' - ' . $this->event->city }}" />
         <div>
@@ -28,7 +28,8 @@
                 </flux:tabs>
                 <flux:tab.panel name="churches">
                     @if ($this->event->churches->isEmpty())
-                        <flux:text class="mt-6">{{ __('No churches have been added to your event yet.') }}</flux:text>
+                        <flux:text class="mt-6">{{ __('No churches have been added to your event yet.') }}
+                        </flux:text>
                     @else
                         <livewire:church-table :ministry="$this->ministry" :event="$this->event" />
                     @endif

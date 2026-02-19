@@ -1,0 +1,116 @@
+<?php
+
+use Livewire\Component;
+use App\Models\Ministry;
+use App\Models\Event;
+use App\Models\Contact;
+
+new class extends Component {
+    public $ministry;
+    public $decisions;
+    public $contacts_decided;
+    public $decisions_without_contact_details;
+    public $contacts_not_decided;
+    public $contacted;
+    public $met;
+    public $part_of_church;
+    public $not_interested;
+    public $invalid_contact_details;
+    public array $decisions_data = [];
+    public array $contacts_data = [];
+
+    public function mount(Ministry $ministry)
+    {
+        $this->ministry = $ministry;
+        $this->decisions_without_contact_details = Event::where('ministry_id', $this->ministry->id)->sum('decisions_without_contact_details');
+        $this->contacts = $this->ministry->contacts->count();
+        $this->contacts_decided = $this->ministry->contacts->where('decision', true)->count();
+        $this->decisions = $this->decisions_without_contact_details + $this->contacts_decided;
+        $this->contacts_not_decided = $this->ministry->contacts->where('decision', false)->count();
+        $this->contacted = $this->ministry->contacts->whereNotNull('contacted_date')->where('invalid_contact_details', false)->count();
+        $this->met = $this->ministry->contacts->where('met', true)->where('invalid_contact_details', false)->count();
+        $this->part_of_church = $this->ministry->contacts->where('part_of_church', true)->where('invalid_contact_details', false)->count();
+        $this->not_interested = $this->ministry->contacts->where('not_interested', true)->where('invalid_contact_details', false)->count();
+        $this->invalid_contact_details = $this->ministry->contacts->where('invalid_contact_details', true)->count();
+        //dd($this->contacted);
+
+        $this->decisions_data = [['name' => __('With contact details') . ' (' . $this->contacts_decided . ')', 'value' => $this->contacts_decided], ['name' => __('Without contact details') . ' (' . $this->decisions_without_contact_details . ')', 'value' => $this->decisions_without_contact_details]];
+
+        $this->contacts_data = [['name' => __('Decision') . ' (' . $this->contacts_decided . ')', 'value' => $this->contacts_decided], ['name' => __('No decision') . ' (' . $this->contacts_not_decided . ')', 'value' => $this->contacts_not_decided], ['name' => __('Contacted') . ' (' . $this->contacted . ')', 'value' => $this->contacted], ['name' => __('Met') . ' (' . $this->met . ')', 'value' => $this->met], ['name' => __('Part of Church') . ' (' . $this->part_of_church . ')', 'value' => $this->part_of_church], ['name' => __('Not Interested') . ' (' . $this->not_interested . ')', 'value' => $this->not_interested], ['name' => __('Invalid Details') . ' (' . $this->invalid_contact_details . ')', 'value' => $this->invalid_contact_details]];
+    }
+};
+?>
+
+<div class="space-y-6">
+    <div class="space-y-4">
+
+        <flux:heading size="xl">{{ $this->ministry->name }}</flux:heading>
+        <x-partials.header heading="{{ __('Statistics') }}" />
+        @can('update', $this->ministry)
+            <div>
+                <flux:breadcrumbs>
+                    <flux:breadcrumbs.item href="{{ route('ministry', $this->ministry) }}" wire:navigate>
+                        {{ $this->ministry->name }}
+                    </flux:breadcrumbs.item>
+                    <flux:breadcrumbs.item>{{ __('Statistics') }}</flux:breadcrumbs.item>
+                </flux:breadcrumbs>
+            </div>
+            <flux:separator />
+        @endcan
+    </div>
+    <livewire:ministry-nav :ministry="$this->ministry">
+        <div class="space-y-6">
+            <flux:card>
+                <div class="flex gap-4 items-center">
+                    <flux:heading size="lg">{{ __('Decisions') }}</flux:heading>
+                    <flux:badge color="orange" size="lg">{{ $this->decisions }}</flux:badge>
+                </div>
+                <flux:chart wire:model="decisions_data" class="h-80">
+                    <flux:chart.svg>
+                        <flux:chart.bar field="value" class="text-blue-300 dark:text-blue-700" width="23%" />
+
+                        <flux:chart.axis axis="x" field="name">
+                            <flux:chart.axis.tick />
+                        </flux:chart.axis>
+
+                        <flux:chart.axis axis="y">
+                            <flux:chart.axis.grid />
+                            <flux:chart.axis.tick />
+                        </flux:chart.axis>
+                    </flux:chart.svg>
+
+                    <flux:chart.tooltip>
+                        <flux:chart.tooltip.value field="value" label="{{ __('Number') }}" />
+                    </flux:chart.tooltip>
+                </flux:chart>
+            </flux:card>
+            <flux:separator />
+            <flux:card>
+                <div class="flex gap-4 items-center">
+                    <flux:heading size="lg">{{ __('Contacts') }}</flux:heading>
+                    <flux:badge color="orange" size="lg">{{ $this->contacts }}</flux:badge>
+                </div>
+                <flux:chart wire:model="contacts_data" class="h-100">
+                    <flux:chart.svg>
+                        <flux:chart.bar field="value" radius="6" class="text-blue-300 dark:text-blue-700"
+                            width="80%" />
+
+                        <flux:chart.axis axis="x" field="name">
+                            <flux:chart.axis.tick />
+                        </flux:chart.axis>
+
+                        <flux:chart.axis axis="y">
+                            <flux:chart.axis.grid />
+                            <flux:chart.axis.tick />
+                        </flux:chart.axis>
+                    </flux:chart.svg>
+
+                    <flux:chart.tooltip>
+                        <flux:chart.tooltip.value field="value" label="{{ __('Number') }}" />
+                    </flux:chart.tooltip>
+                </flux:chart>
+            </flux:card>
+        </div>
+    </livewire:ministry-nav>
+
+</div>

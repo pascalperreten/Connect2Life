@@ -16,6 +16,7 @@ class EditDates extends Component
     public $contact;
     public $contacted_date;
     public $meeting_date;
+    public $follow_up_person;
 
     public function mount() {
         $this->form->setContact($this->contact);

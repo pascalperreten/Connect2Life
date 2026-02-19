@@ -55,7 +55,7 @@
                     </flux:card>
                 </div>
             </div>
-            <livewire:contacts.assign :ministry="$this->ministry" :event="$this->event" />
+            <livewire:assign :ministry="$this->ministry" :event="$this->event" />
 
         </div>
     </livewire:event-nav>

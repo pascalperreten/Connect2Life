@@ -27,7 +27,7 @@ class Members extends Component
         }
     }
 
-    #[On('invitation_sent')]
+    #[On('updated')]
     public function getMembers() {
         $this->members = User::where('ministry_id', $this->ministry->id)->where('church_id', null)->get();
     }

@@ -8,7 +8,20 @@
             <flux:heading size="xl">{{ $contact->name }}</flux:heading>
             <flux:separator />
 
+
+
             <form class="space-y-6">
+
+                <flux:select variant="listbox" label="{{ __('Follow-Up Person') }}"
+                    wire:model.change="form.follow_up_person" placeholder="{{ __('Select a follow-up person') }}"
+                    description="{{ __('Who will follow up with this person?') }}">
+                    @foreach ($contact->church->members as $member)
+                        <flux:select.option :value="$member->id">
+                            {{ $member->first_name . ' ' . $member->last_name }}
+                        </flux:select.option>
+                    @endforeach
+                </flux:select>
+
                 <flux:heading size="lg">{{ __('Get in touch') }}</flux:heading>
 
                 <flux:radio.group wire:model.lazy="form.invalid_contact_details"
@@ -22,8 +35,12 @@
                 @endif
 
                 @if (!$this->form->invalid_contact_details)
+                    <flux:checkbox.group variant="cards">
+                        <flux:checkbox wire:model.lazy="form.decision" label="{{ __('Decision for Christ') }}"
+                            description="{{ __('The Person has made a decision for Christ.') }}" />
+                    </flux:checkbox.group>
                     <flux:field>
-                        <flux:label>{{ 'Contacted' }}</flux:label>
+                        <flux:label>{{ __('Contacted') }}</flux:label>
                         <flux:description>{{ __('When did you get in touch?') }}</flux:description>
                         <div class="flex">
                             <flux:date-picker locale="{{ app()->getLocale() }}" with-today
@@ -69,14 +86,14 @@
                             <flux:checkbox wire:model.lazy="form.met" label="{{ __('Met') }}"
                                 description="{{ __('Did you meet up with that person?') }}" />
                         </flux:checkbox.group>
+
                         @if ($this->form->met)
                             <flux:checkbox.group variant="cards">
                                 <flux:checkbox wire:model.lazy="form.part_of_church" label="{{ __('Part of Church') }}"
-                                    description="{{ __('Did you meet up with that person?') }}" />
+                                    description="{{ __('Is this person part of the church, or part of a small group?') }}" />
                             </flux:checkbox.group>
                         @endif
                     @endif
-
                 @endif
             </form>
         </div>

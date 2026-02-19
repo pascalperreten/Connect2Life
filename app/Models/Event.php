@@ -10,9 +10,9 @@ use App\Models\Ministry;
 use App\Models\Contact;
 use App\Models\Church;
 use App\Models\User;
-use App\Models\Decision;
 use App\Models\Language;
 use App\Models\District;
+use App\Models\PostalCode;
 
 class Event extends Model
 {
@@ -59,12 +59,12 @@ class Event extends Model
         return $this->hasMany(Language::class);
     }
 
-    public function contacts(): HasMany {
-        return $this->hasMany(Contact::class);
+    public function postalCodes(): HasMany {
+        return $this->hasMany(PostalCode::class);
     }
 
-    public function decisions(): HasMany {
-        return $this->hasMany(Decision::class);
+    public function contacts(): HasMany {
+        return $this->hasMany(Contact::class);
     }
 
     public function districts(): HasMany {

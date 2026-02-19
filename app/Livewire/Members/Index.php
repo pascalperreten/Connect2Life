@@ -34,8 +34,8 @@ class Index extends Component
     public function updated() {
         $this->dispatch('invitation_sent');
         Flux::toast(
-            heading: 'Änderungen gespeichert',
-            text: 'Deine Änderungen wurden gespeichert.',
+            heading: __('Changes saved'),
+            text: __('Your changes have been saved successfully.'),
             variant: 'success',
         );
     }

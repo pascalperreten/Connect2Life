@@ -26,7 +26,7 @@ class Index extends Component
         $this->contacts = Contact::where('event_id', $event->id)->latest()->get();
         //$this->authorize('view', $this->event);
         $this->contacts_number = count($this->contacts);
-        $this->decisions = $this->event->decisions;
+        //$this->decisions = $this->event->decisions;
         $this->contact_with_decision = count(Contact::where('decision', true)->get());
         $this->contact_without_decision = count(Contact::where('decision', false)->get());
         $this->decisions_without_contact = $this->event->decisions - $this->contact_with_decision;

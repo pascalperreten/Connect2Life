@@ -138,12 +138,7 @@ new class extends Component {
                         <flux:table.column>Name</flux:table.column>
 
                         <flux:table.column>{{ __('Info') }}</flux:table.column>
-                        {{-- <flux:table.column>{{ __('Contact') }}</flux:table.column>
-                        <flux:table.column>{{ __('Place of residence') }}</flux:table.column>
-                        <flux:table.column>{{ __('Age') }}</flux:table.column>
-                        <flux:table.column>{{ __('Language') }}</flux:table.column>
-                        <flux:table.column>{{ __('Comments') }}</flux:table.column>
-                        <flux:table.column>Name Evangelist</flux:table.column> --}}
+                        <flux:table.column>{{ __('Follow-Up Person') }}</flux:table.column>
                         <flux:table.column>{{ __('Contacted') }}</flux:table.column>
                         <flux:table.column>{{ __('Meeting') }}</flux:table.column>
                         <flux:table.column>{{ __('Church') }}</flux:table.column>
@@ -163,6 +158,12 @@ new class extends Component {
                                         <div class="space-y-2 max-w-md">
                                             <flux:heading size="xl">{{ $contact->name }}</flux:heading>
                                             <flux:separator />
+                                            @if (!$contact->decision)
+                                                <flux:text
+                                                    class="text-red-400 text-center rounded-sm font-bold p-2 text-sm">
+                                                    {{ __('This contact has not made a decision for Christ yet!') }}
+                                                </flux:text>
+                                            @endif
                                             <flux:heading size="lg">{{ __('Address') }}</flux:heading>
                                             <flux:text>
                                                 {{ __('City') . ': ' }}
@@ -170,7 +171,7 @@ new class extends Component {
                                                     {{ $contact->city }}
                                                 </flux:link>
                                             </flux:text>
-                                            @if ($contact->postalCode)
+                                            @if ($contact->postalCode()->exists())
                                                 <flux:text>
 
                                                     {{ __('Postal Code') . ': ' }}
@@ -181,7 +182,7 @@ new class extends Component {
 
                                                 </flux:text>
                                             @endif
-                                            @if ($contact->district)
+                                            @if ($contact->district()->exists())
                                                 <flux:text>
                                                     {{ __('District') . ': ' }}
 
@@ -268,87 +269,29 @@ new class extends Component {
                                                         @endif
                                                     </div>
                                                 </div>
+
                                             </div>
+
+                                            @if ($contact->evangelist_name)
+                                                <flux:separator />
+                                                <div>
+                                                    <flux:heading size="lg">{{ __('Evangelist Name') }}
+                                                    </flux:heading>
+                                                    <flux:text>{{ $contact->evangelist_name }}</flux:text>
+                                                </div>
+                                            @endif
+
                                         </div>
                                     </flux:modal>
                                 </flux:table.cell>
-                                {{-- <flux:table.cell>
-                                    <div class="flex items-center gap-4">
-                                        <livewire:contact-info :contact="$contact" />
-                                    </div>
-                                </flux:table.cell>
-                                <flux:table.cell>
-                                    @if ($contact->postalCode->first() || $contact->postalCode->first())
-                                        <flux:dropdown position="right" align="middle">
-
-                                            <flux:button class="cursor-pointer" icon:trailing="map-pin">
-                                            </flux:button>
-                                            <flux:menu keep-open>
-                                                <flux:menu.item target="_blank"
-                                                    href="{{ $this->districtMapUrl($contact) }}">
-                                                    <div class="space-y-2 flex flex-col">
-                                                        @if ($contact->postalCode->first())
-                                                            <flux:heading>{{ __('Postal Code') }}
-                                                            </flux:heading>
-                                                            <flux:text>
-                                                                {{ $contact->postalCode->first()->name }}
-                                                            </flux:text>
-                                                        @endif
-                                                        @if ($contact->district->first() && $contact->postalCode->first())
-                                                            <flux:separator />
-                                                        @endif
-
-                                                        @if ($contact->district->first())
-                                                            <flux:heading>{{ __('District') }}</flux:heading>
-                                                            <flux:text>{{ $contact->district->first()->name }}
-                                                            </flux:text>
-                                                        @endif
-                                                    </div>
-                                                </flux:menu.item>
-                                            </flux:menu>
-                                        </flux:dropdown>
-                                    @endif
-                                </flux:table.cell>
-                                <flux:table.cell>
-                                    @if ($contact->age)
-                                        <flux:text class="truncate">
-                                            {{ $contact->age }}
-                                        </flux:text>
-                                    @endif
-                                </flux:table.cell>
 
                                 <flux:table.cell>
-                                    @if ($contact->languages)
-                                        <flux:text class="text-wrap">
-                                            @foreach ($contact->languages as $language)
-                                                {{ $language->name }}
-                                            @endforeach
-                                        </flux:text>
+                                    @if ($contact->followUpPerson)
+                                        <livewire:contact-card :contact="$contact->followUpPerson" />
+                                    @else
+                                        <flux:text>{{ __('Not assigned yet') }}</flux:text>
                                     @endif
                                 </flux:table.cell>
-                                <flux:table.cell class="relative">
-                                    @if ($contact->comments)
-                                        <flux:text>
-                                            {{ $this->shortText($contact->comments, $contact->id) }}
-                                        </flux:text>
-                                        @if (in_array($contact->id, $this->showMore))
-                                            <flux:modal.trigger name="showMore-{{ $contact->id }}">
-                                                <flux:text class="cursor-pointer font-bold font-sm underline">
-                                                    {{ __('Show more') }}
-                                                </flux:text>
-                                            </flux:modal.trigger>
-
-                                            <flux:modal name="showMore-{{ $contact->id }}" class="md:w-96">
-                                                <flux:text>{{ $contact->comments }}</flux:text>
-                                            </flux:modal>
-                                        @endif
-                                    @endif
-                                </flux:table.cell>
-                                <flux:table.cell>
-                                    @if ($contact->evangelist_name)
-                                        {{ $contact->evangelist_name }}
-                                    @endif
-                                </flux:table.cell> --}}
                                 <flux:table.cell>
 
                                     @if ($contact->invalid_contact_details)

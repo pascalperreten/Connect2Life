@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('age')->nullable();
             $table->string('evangelist_name')->nullable();
             $table->foreignId('evangelist_church_id')->nullable()->constrained('churches')->nullOnDelete();
+            $table->foreignId('follow_up_person')->nullable()->constrained('users')->nullOnDelete();
             $table->boolean('assigned')->default(false);
             $table->foreignId('event_id')->constrained()->cascadeOnDelete();
             $table->foreignId('church_id')->nullable()->constrained()->nullOnDelete();

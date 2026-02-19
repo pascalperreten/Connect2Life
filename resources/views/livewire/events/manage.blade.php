@@ -6,8 +6,8 @@
         <x-partials.header heading="{{ $this->event->name }} - {{ $this->event->city }}" />
         <div>
             <flux:breadcrumbs>
-                <flux:breadcrumbs.item href="{{ route('events.index', $this->ministry) }}" wire:navigate>
-                    Events
+                <flux:breadcrumbs.item href="{{ route('ministry', $this->ministry) }}" wire:navigate>
+                    {{ $this->ministry->name }}
                 </flux:breadcrumbs.item>
                 <flux:breadcrumbs.item href="{{ route('events.show', [$this->ministry, $this->event]) }}" wire:navigate>
                     {{ $this->event->name }} - {{ $this->event->city }}
@@ -64,17 +64,6 @@
                             </div>
                         </flux:tab>
                     </div>
-                    {{-- <div class="md:hidden flex w-full justify-center p-2 gap-2">
-                        <flux:tab icon="language" name="language" />
-                        <flux:separator vertical />
-                        <flux:tab icon="map" name="district" />
-                        <flux:separator vertical />
-                        <flux:tab icon="map-pin" name="postal_codes" />
-                        <flux:separator vertical />
-                        <flux:tab icon="chat-bubble-left-right" name="form" />
-                        <flux:separator vertical />
-                        <flux:tab icon="megaphone" name="evangelize" />
-                    </div> --}}
                 </flux:tabs>
                 <flux:tab.panel name="language">
                     <livewire:languages.index :event="$this->event" />

@@ -59,8 +59,8 @@ class PostalCodeForm extends Form
             'name' => $this->name,
         ]);
         Flux::toast(
-            heading: 'Postleitzahl hinzugefügt',
-            text: 'Die Postleitzahl wurde erfolgreich hinzugefügt.',
+            heading: __('Postal Code added.'),
+            text: __('The postal code has been added successfully.'),
             variant: 'success',
         );
 
@@ -75,8 +75,8 @@ class PostalCodeForm extends Form
             'name' => $this->name,
         ]);
         Flux::toast(
-            heading: 'Postleitzahl aktualisiert',
-            text: 'Die Postleitzahl wurde erfolgreich aktualisiert.',
+            heading: __('Postal Code updated.'),
+            text: __('The postal code has been updated successfully.'),
             variant: 'success',
         );
         $this->edit = [];
@@ -85,8 +85,8 @@ class PostalCodeForm extends Form
         PostalCode::where('id', $id)->delete();
         Flux::modals()->close();
         Flux::toast(
-            heading: 'Postleitzahl gelöscht',
-            text: 'Die Postleitzhalt wurde erfolgreich gelöscht.',
+            heading: __('Postal Code deleted.'),
+            text: __('The postal code has been deleted successfully.'),
             variant: 'success',
         );
         $this->edit = [];

@@ -39,6 +39,7 @@ class Contact extends Model
         'event_id',
         'church_id',
         'evangelist_church_id',
+        'follow_up_person',
     ];
 
     public function casts(): array {
@@ -77,5 +78,9 @@ class Contact extends Model
 
     public function churchOfEvangelist(): BelongsTo {
         return $this->belongsTo(Church::class, 'evangelist_church_id', 'id');
+    }
+
+    public function followUpPerson(): BelongsTo {
+        return $this->belongsTo(User::class, 'follow_up_person', 'id');
     }
 }

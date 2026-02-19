@@ -1,15 +1,18 @@
-<div class="space-y-4">
+<div class="space-y-6">
     <div class="space-y-4">
-        @if ($this->ministry->logo_path)
-            <div class="flex justify-center">
-                <div class="w-50">
-                    <img class="max-h-full max-w-full" src="{{ asset('storage/' . $this->ministry->logo_path) }}">
-                </div>
-            </div>
-        @else
-            <flux:heading size="xl">{{ $this->ministry->name }}</flux:heading>
-        @endif
+        <flux:heading size="xl">{{ $this->ministry->name }}</flux:heading>
         <x-partials.header heading="Details" />
+        @can('update', $this->ministry)
+            <div>
+                <flux:breadcrumbs>
+                    <flux:breadcrumbs.item href="{{ route('ministry', $this->ministry) }}" wire:navigate>
+                        {{ $this->ministry->name }}
+                    </flux:breadcrumbs.item>
+                    <flux:breadcrumbs.item>{{ __('Edit') }}</flux:breadcrumbs.item>
+                </flux:breadcrumbs>
+            </div>
+            <flux:separator />
+        @endcan
     </div>
     <livewire:ministry-nav :ministry="$this->ministry">
         <flux:card>
@@ -76,12 +79,13 @@
 
                     @can('delete', $this->ministry)
                         <flux:modal.trigger name="delete-ministry">
-                            <flux:button variant="danger">{{ __('Delete') }}</flux:button>
+                            <flux:button variant="danger">{{ __('Delete Ministry') }}</flux:button>
                         </flux:modal.trigger>
-                        <flux:modal name="delete-ministry" class="min-w-[22rem]">
+                        <flux:modal name="delete-ministry" class="min-w-[22rem] border border-red-500">
                             <div class="space-y-6">
                                 <div>
-                                    <flux:heading size="lg">{{ __('Do you want to delete your ministry?') }}
+                                    <flux:heading size="lg" class="text-red-500">
+                                        {{ __('Do you really want to delete your ministry?') }}
                                     </flux:heading>
                                     <flux:text class="mt-2">
                                         {{ __('All data, all events, churches, and members will be deleted. This cannot be undone.') }}
@@ -103,4 +107,5 @@
             </form>
         </flux:card>
     </livewire:ministry-nav>
+    <flux:toast />
 </div>

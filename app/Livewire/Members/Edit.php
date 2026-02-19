@@ -11,6 +11,7 @@ use App\Livewire\Forms\MemberForm;
 use App\Notifications\Invitation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Flux\Flux;
 
 class Edit extends Component
 {
@@ -35,6 +36,11 @@ class Edit extends Component
         $this->form->update($this->church);
         $this->dispatch('updated');
         $this->modal('edit-member-' . $this->member->id)->close();
+        Flux::toast(
+            heading: __('Account updated'),
+            text: __('The account has been updated successfully.'),
+            variant: 'success',
+        );
     }
 
     public function sendInvitation() {
@@ -44,10 +50,14 @@ class Edit extends Component
     }
 
     public function delete() {
-        $this->form->delete();
         $this->dispatch('updated');
-        $this->dispatch('invitation_sent');
-        $this->modal('edit-member-' . $this->member->id)->close();
+        Flux::modals()->close();
+        Flux::toast(
+            heading: __('Account deleted'),
+            text: __('The account has been deleted successfully.'),
+            variant: 'success',
+        );
+        $this->form->delete();
     }
 
 

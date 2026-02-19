@@ -83,28 +83,27 @@
 
             <div class="flex gap-2">
                 <flux:spacer />
-                <flux:button type="submit" variant="primary">Speichern</flux:button>
+                <flux:button type="submit" variant="primary">{{ __('Save') }}</flux:button>
                 @if ($member->ministry->owner->id !== $member->id)
                     <flux:modal.trigger name="delete-member-{{ $member->id }}">
-                        <flux:button type="button" variant="danger">Delete</flux:button>
+                        <flux:button type="button" variant="danger">{{ __('Delete') }}</flux:button>
                     </flux:modal.trigger>
                     <flux:modal name="delete-member-{{ $member->id }}" class="text-start min-w-[22rem]">
                         <div class="space-y-6">
                             <div>
-                                <flux:heading size="lg">Möchtest du
-                                    {{ $member->first_name . ' ' . $member->last_name }}
-                                    löschen?
+                                <flux:heading size="lg">
+                                    {{ __('Would you like to delete this account?') }}
                                 </flux:heading>
                                 <flux:text class="mt-2">
-                                    Löschen kann nicht rückgängig gemacht werden.
+                                    {{ __('This action cannot be undone.') }}
                                 </flux:text>
                             </div>
                             <div class="flex gap-2">
                                 <flux:spacer />
                                 <flux:modal.close>
-                                    <flux:button variant="ghost">Abbrechen</flux:button>
+                                    <flux:button variant="ghost">{{ __('Cancel') }}</flux:button>
                                 </flux:modal.close>
-                                <flux:button type="button" wire:click="delete" variant="danger">Löschen
+                                <flux:button type="button" wire:click="delete" variant="danger">{{ __('Delete') }}
                                 </flux:button>
                             </div>
                         </div>

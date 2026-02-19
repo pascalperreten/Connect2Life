@@ -27,7 +27,7 @@ class LanguageForm extends Form
         $unique = Rule::unique('language_translations')->where('event_id', $this->event->id);
 
         if (isset($this->language)) {
-            $unique->ignore($this->language->id);
+            $unique->ignore($this->language->translation->id);
         }
         return [
             'name' => [
@@ -74,8 +74,8 @@ class LanguageForm extends Form
             ['locale' => 'en', 'name' => $english_name, 'event_id' => $this->event->id],
         ]);
         Flux::toast(
-            heading: 'Language added',
-            text: 'The Language has been added successfully.',
+            heading: __('Language added'),
+            text: __('The Language has been added successfully.'),
             variant: 'success',
         );
 
@@ -86,13 +86,26 @@ class LanguageForm extends Form
 
     public function updateLanguage($id) {
         $this->validateOnly('name');
-        $language = LanguageTranslation::where('language_id', $id)->where('locale', app()->getLocale())->first();
-        $language->update([
-            'name' => $this->name,
-        ]);
+        $translator = new DeepLClient(env('DEEPL_KEY'));
+        $german_name = $translator->translateText($this->name, null, 'DE');
+        $english_name = $translator->translateText($this->name, null, 'EN-US');
+
+        $languages = LanguageTranslation::where('language_id', $id)->get();
+        foreach ($languages as $translation) {
+            if($translation->locale === 'de') {
+                $translation->update([
+                    'name' => $german_name,
+                ]);
+            } elseif($translation->locale === 'en') {
+                $translation->update([
+                    'name' => $english_name,
+                ]);
+            }
+        }
+        
         Flux::toast(
-            heading: 'Language updated',
-            text: 'The language has been updated successfully.',
+            heading: __('Language updated'),
+            text: __('The language has been updated successfully.'),
             variant: 'success',
         );
         $this->edit = [];
@@ -101,8 +114,8 @@ class LanguageForm extends Form
         Language::where('id', $id)->delete();
         Flux::modals()->close();
         Flux::toast(
-            heading: 'Language deleted',
-            text: 'The language has been deleted successfully.',
+            heading: __('Language deleted'),
+            text: __('The language has been deleted successfully.'),
             variant: 'success',
         );
         $this->edit = [];

@@ -13,11 +13,11 @@
                     <flux:breadcrumbs.item href="{{ route('events.show', [$this->ministry, $this->event]) }}" wire:navigate>
                         {{ $this->event->name }} - {{ $this->event->city }}
                     </flux:breadcrumbs.item>
+                    <flux:breadcrumbs.item
+                        href="{{ route('churches.show', [$this->ministry, $this->event, $this->church]) }}" wire:navigate>
+                        {{ $this->church->name }}
+                    </flux:breadcrumbs.item>
                 @endcan
-                <flux:breadcrumbs.item
-                    href="{{ route('churches.show', [$this->ministry, $this->event, $this->church]) }}" wire:navigate>
-                    {{ $this->church->name }}
-                </flux:breadcrumbs.item>
             </flux:breadcrumbs>
 
         </div>
@@ -30,9 +30,9 @@
                 <flux:tab.group class="">
                     <flux:tabs scrollable scrollable:scrollbar="hide" wire:model="activeTab">
                         <flux:tab name="details">Details</flux:tab>
-                        <flux:tab name="follow-up-contact">Follow Up Kontakt</flux:tab>
+                        <flux:tab name="follow-up-contact">{{ __('Follow-up Contact') }}</flux:tab>
                         @if ($this->evangelize)
-                            <flux:tab name="evangelize">Evangelisieren</flux:tab>
+                            <flux:tab name="evangelize">{{ __('Evangelize') }}</flux:tab>
                         @endif
 
                     </flux:tabs>
@@ -44,16 +44,17 @@
                         <livewire:churches.edit :ministry="$this->ministry" :church="$this->church" :event="$this->event" />
                     </flux:tab.panel>
                     <flux:tab.panel name="follow-up-contact">
-                        <flux:select variant="listbox" wire:model.change="follow_up_contact" label="Follow-Up Kontakt"
-                            placeholder="Follow-Up Kontakt"
-                            description="Gib die Person an, welche wir für die Nacharbeit kontaktieren sollen">
+                        <flux:select variant="listbox" wire:model.change="follow_up_contact"
+                            label="{{ __('Follow-up Contact') }}" placeholder="{{ __('Follow-up Contact') }}"
+                            description="{{ __('Please indicate the person we should contact for follow-up work.') }}">
                             @foreach ($this->church->members as $member)
                                 <flux:select.option value="{{ $member->id }}" wire:key="{{ $member->id }}">
                                     {{ $member->first_name }} {{ $member->last_name }}
                                 </flux:select.option>
                             @endforeach
                             @if (!$this->church->members)
-                                <flux:select.option disabled>Noch keine Mitglieder in dieser Kirche</flux:select.option>
+                                <flux:select.option disabled>{{ __('No members have been added yet.') }}
+                                </flux:select.option>
                             @endif
                         </flux:select>
 
@@ -63,23 +64,24 @@
                         <flux:tab.panel name="evangelize">
                             <div class="space-y-8">
                                 <div class="flex justify-between items-center">
-                                    <flux:heading size="lg">Evangelisieren</flux:heading>
+                                    <flux:heading size="lg">{{ __('Evangelize') }}</flux:heading>
                                 </div>
                                 <flux:separator />
-                                <flux:text>Du möchtest selber evangelisieren gehen und direkt Leute deiner Gemeinde
-                                    hinzufügen?
+                                <flux:text>
+                                    {{ __('Would you like to evangelize yourself and add people directly to your church?') }}
                                 </flux:text>
                                 <div class="space-y-2">
-                                    <flux:text variant="strong">Kopiere diesen Link und schicke ihn deinen Evangelisten
+                                    <flux:text variant="strong">
+                                        {{ __('Copy this link and send it to your evangelists') }}
                                     </flux:text>
                                     <flux:input readonly copyable value="{{ $this->addContact() }}"></flux:input>
                                 </div>
                                 <div class="space-y-2">
-                                    <flux:text variant="strong">Oder öffne direkt das Formular über diesen Link
+                                    <flux:text variant="strong">
+                                        {{ __('Or open the form directly by clicking on this button.') }}
                                     </flux:text>
-                                    <flux:button target="_blank" href="{{ $this->addContact() }}" wire:navigate>
-                                        Kontakte
-                                        hinzufügen
+                                    <flux:button target="_blank" href="{{ $this->addContact() }}">
+                                        {{ __('Add contacts') }}
                                     </flux:button>
                                 </div>
                             </div>

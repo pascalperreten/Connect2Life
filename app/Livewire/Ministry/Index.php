@@ -19,9 +19,15 @@ class Index extends Component
 
     public User $user;
 
+    public $total_decisions = 0;
+
     public function mount() {
         $this->user = Auth::user();
         $this->ministry = $this->user->ministry;
+        $decison1 = $this->ministry->events->sum('decisions_without_contact_details');
+        $decision2 = $this->ministry->contacts()->where('decision', true)->count();
+        $this->total_decisions = $decison1 + $decision2;
+
         // if($this->user->role === 'follow_up') {
         //     $this->redirect(route('events.show', [$ministry, $this->user->event]));
         // }
@@ -34,6 +40,12 @@ class Index extends Component
     public function newContacts($event) {
         $newContacts = Contact::where('event_id' , $event->id)->where('church_id', null)->first();
         return $newContacts;
+    }
+
+    public function getDecisions($event) {
+        $contactsWithDecisions = Contact::where('event_id' , $event->id)->where('decision', true)->count();
+        $decisionsWithoutContactDetails = $event->decisions_without_contact_details;
+        return $contactsWithDecisions + $decisionsWithoutContactDetails;
     }
 
     public function showEvent($event) {

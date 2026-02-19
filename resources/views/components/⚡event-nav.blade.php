@@ -58,6 +58,12 @@ new class extends Component {
                             <i class="fa-regular fa-gear mr-2"></i>
                             {{ __('Manage') }}
                         </flux:navlist.item>
+
+                        <flux:navlist.item wire:navigate
+                            href="{{ route('events.stats', [$this->ministry, $this->event]) }}">
+                            <i class="fa-regular fa-chart-bar mr-2"></i>
+                            {{ __('Statistics') }}
+                        </flux:navlist.item>
                     </div>
 
                     <div x-show="!open">
@@ -80,6 +86,10 @@ new class extends Component {
                         <flux:navlist.item wire:navigate
                             href="{{ route('events.manage', [$this->ministry, $this->event]) }}">
                             <i class="text-lg fa-regular fa-gear"></i>
+                        </flux:navlist.item>
+                        <flux:navlist.item wire:navigate
+                            href="{{ route('events.stats', [$this->ministry, $this->event]) }}">
+                            <i class="text-lg fa-regular fa-chart-bar"></i>
                         </flux:navlist.item>
                     </div>
                 </flux:navlist>
@@ -105,6 +115,9 @@ new class extends Component {
                     </flux:navbar.item>
                     <flux:navbar.item wire:navigate href="{{ route('events.manage', [$this->ministry, $this->event]) }}">
                         <i class="text-2xl fa-regular fa-gear"></i>
+                    </flux:navbar.item>
+                    <flux:navbar.item wire:navigate href="{{ route('events.stats', [$this->ministry, $this->event]) }}">
+                        <i class="text-2xl fa-regular fa-chart-bar"></i>
                     </flux:navbar.item>
                 </flux:navbar>
             </div>

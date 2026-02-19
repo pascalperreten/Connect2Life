@@ -40,11 +40,11 @@ new class extends Component {
     <flux:table>
         <flux:table.columns sticky>
             <flux:table.column>Name</flux:table.column>
-            <flux:table.column>Adresse</flux:table.column>
+            <flux:table.column>{{ __('Address') }}</flux:table.column>
             <flux:table.column>Pastor</flux:table.column>
-            <flux:table.column>Botschafter</flux:table.column>
-            <flux:table.column>Follow Up Kontakt</flux:table.column>
-            <flux:table.column>Webseite</flux:table.column>
+            <flux:table.column>{{ __('Ambassador') }}</flux:table.column>
+            <flux:table.column>{{ __('Follow-up Contact') }}</flux:table.column>
+            <flux:table.column>{{ __('Website') }}</flux:table.column>
             <flux:table.column></flux:table.column>
 
         </flux:table.columns>
@@ -89,7 +89,7 @@ new class extends Component {
                                 @if ($pastor)
                                     <livewire:contact-card align="start" :contact="$pastor" />
                                 @else
-                                    <flux:text>kein Pastor</flux:text>
+                                    <flux:text>{{ __('No Pastor') }}</flux:text>
                                 @endif
                             @endforeach
                         </div>
@@ -100,7 +100,7 @@ new class extends Component {
                                 @if ($ambassador)
                                     <livewire:contact-card align="start" :contact="$ambassador" />
                                 @else
-                                    <flux:text>kein Botschafter</flux:text>
+                                    <flux:text>{{ __('No Ambassador') }}</flux:text>
                                 @endif
                             @endforeach
                         </div>
@@ -114,7 +114,7 @@ new class extends Component {
                                 <livewire:follow-up-contact align="start" :church="$church" />
                             </div>
                         @else
-                            <flux:text>kein Follow Up Kontakt</flux:text>
+                            <flux:text>{{ __('No Follow-Up Contact') }}</flux:text>
                         @endif
                     </flux:table.cell>
                     <flux:table.cell>

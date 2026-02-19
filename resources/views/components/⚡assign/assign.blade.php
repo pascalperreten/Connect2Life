@@ -1,5 +1,5 @@
 <div class="space-y-6">
-    @if (!$contacts->isEmpty())
+    @if (!$this->newContacts()->isEmpty())
         @if (isset($currentContact))
             <div wire:show="showChurches"
                 class="fixed overflow-auto top-0 left-0 w-full max-h-1/2 shadow bg-cyan-700 text-white border-b-2 border-orange-500 p-12 z-10">
@@ -74,96 +74,96 @@
             {{ __('You have new Contacts!') }}
         </flux:heading>
         <flux:card>
-            <form wire:submit="updateChurch">
-                <flux:table>
-                    <flux:table.columns>
-                        <flux:table.column>Name</flux:table.column>
-                        <flux:table.column>{{ __('Postal Code') }}</flux:table.column>
-                        <flux:table.column>{{ __('District') }}</flux:table.column>
-                        <flux:table.column>{{ __('Age') }}</flux:table.column>
-                        <flux:table.column>{{ __('Gender') }}</flux:table.column>
-                        <flux:table.column>{{ __('Language') }}</flux:table.column>
-                        <flux:table.column></flux:table.column>
-                    </flux:table.columns>
+            <flux:table>
+                <flux:table.columns sticky class="bg-white dark:bg-zinc-900">
+                    <flux:table.column>{{ __('Name') }}</flux:table.column>
+                    <flux:table.column sortable :sorted="$this->sortBy === 'postal_codes.name'"
+                        :direction="$this->sortDirection" wire:click="sort('postal_codes.name')">
+                        {{ __('Postal Code') }}
+                    </flux:table.column>
+                    <flux:table.column sortable :sorted="$this->sortBy === 'districts.name'"
+                        :direction="$this->sortDirection" wire:click="sort('districts.name')">
+                        {{ __('District') }}
+                    </flux:table.column>
+                    <flux:table.column>{{ __('Age') }}</flux:table.column>
+                    <flux:table.column>{{ __('Gender') }}</flux:table.column>
+                    <flux:table.column>{{ __('Language') }}</flux:table.column>
+                    <flux:table.column></flux:table.column>
+                </flux:table.columns>
 
-                    <flux:table.rows>
+                <flux:table.rows>
 
-                        @foreach ($contacts as $contact)
-                            <flux:table.row
-                                class="{{ isset($currentContact) && $currentContact->id === $contact->id ? 'bg-orange-700/10' : '' }}"
-                                wire:key="{ contact.id }">
-
-                                <flux:table.cell wire:key="{ contact.id }">
-                                    {{ $contact->name }}</flux:table.cell>
-                                <flux:table.cell><a class="underline" target="_blank"
+                    @foreach ($this->newContacts() as $contact)
+                        <flux:table.row
+                            class="{{ isset($this->currentContact) && $this->currentContact->id === $contact->id ? 'bg-orange-700/10' : '' }}"
+                            wire:key="contact-{{ $contact->id }}">
+                            <flux:table.cell>
+                                {{ $contact->name }}</flux:table.cell>
+                            <flux:table.cell>
+                                @if (!$contact->postalCode()->exists())
+                                    {{ 'keine' }}
+                                @else
+                                    <a class="underline" target="_blank"
                                         href="{{ $this->postalCodeUrl($contact) }}">{{ $contact->postalCode->first()->name ?? 'keine' }}</a>
-                                </flux:table.cell>
-                                <flux:table.cell><a target="_blank" class="underline"
+                                @endif
+                            </flux:table.cell>
+                            <flux:table.cell>
+                                @if (!$contact->district()->exists())
+                                    {{ 'keine' }}
+                                @else
+                                    <a target="_blank" class="underline"
                                         href="{{ $this->districtUrl($contact) }}">{{ $contact->district->first()->name ?? 'keine' }}</a>
-                                </flux:table.cell>
-                                <flux:table.cell>{{ $contact->age ?? 'keine' }}</flux:table.cell>
-                                <flux:table.cell>
+                                @endif
+                            </flux:table.cell>
+                            <flux:table.cell>{{ $contact->age ?? 'keine' }}</flux:table.cell>
+                            <flux:table.cell>
+                                @if ($contact->gender)
                                     @if ($contact->gender === 'male')
                                         {{ __('Man') }}
                                     @else
                                         {{ __('Woman') }}
                                     @endif
-                                </flux:table.cell>
-                                <flux:table.cell>
-                                    @foreach ($contact->languages as $key => $language)
-                                        @if (count($contact->languages) === 1)
-                                            {{ $language->translation->name }}
-                                        @elseif ($key === count($contact->languages) - 1)
-                                            {{ $language->translation->name }}
-                                        @else
-                                            {{ $language->translation->name }},
-                                        @endif
-                                    @endforeach
-                                </flux:table.cell>
+                                @else
+                                    {{ 'keine' }}
+                                @endif
+                            </flux:table.cell>
+                            <flux:table.cell>
+                                @foreach ($contact->languages as $key => $language)
+                                    @if (count($contact->languages) === 1)
+                                        {{ $language->translation->name }}
+                                    @elseif ($key === count($contact->languages) - 1)
+                                        {{ $language->translation->name }}
+                                    @else
+                                        {{ $language->translation->name }},
+                                    @endif
+                                @endforeach
+                            </flux:table.cell>
 
-                                <flux:table.cell class="text-end flex gap-2">
-                                    <flux:button wire:click="checkChurches({{ $contact->id }})">
-                                        {{ __('Churches') }}
-                                    </flux:button>
-                                    <flux:select wire:model="contact_church.{{ $contact->id }}" variant="listbox"
-                                        placeholder="Wähle eine Kirche aus">
+                            <flux:table.cell align="end" class="flex gap-2">
+                                <flux:button wire:click="checkChurches({{ $contact->id }})">
+                                    {{ __('Churches') }}
+                                </flux:button>
+                                <livewire:assign-church :contact="$contact" :event="$event" :ministry="$ministry" />
+                            </flux:table.cell>
+                        </flux:table.row>
+                    @endforeach
+                </flux:table.rows>
+            </flux:table>
+            <div class="flex">
+                <flux:spacer />
+                <flux:modal.trigger name="assign-church">
+                    <flux:button variant="primary" class="cursor-pointer">{{ __('Complete assignment') }}
+                    </flux:button>
+                </flux:modal.trigger>
+                <flux:modal name="assign-church" class="max-w-sm">
+                    <flux:heading>
+                        {{ __('If you submit the assignment, all churches will receive an email notification.') }}
+                    </flux:heading>
+                    <flux:button class="mt-6" type="button" wire:click="updateChurch">
+                        {{ __('Complete assignment') }}</flux:button>
+                </flux:modal>
 
-                                        @if (count($this->event->churches) >= 1)
-                                            @foreach ($this->event->churches as $church)
-                                                <div class="flex gap-2 py-2">
-                                                    <flux:select.option wire:key="{{ $church->id }}"
-                                                        value="{{ $church->id }}">
-                                                        {{ $church->name }}
-                                                    </flux:select.option>
-                                                    <flux:badge icon="user">
-                                                        {{ $this->getContactNumber($church->id) }}
-                                                    </flux:badge>
-                                                </div>
-                                            @endforeach
-                                        @else
-                                            <div class="text-start p-2 space-y-2">
-                                                <flux:text class="text-red-400 text-xs font-bold">
-                                                    {{ __('No church yet!') }}</flux:text>
-                                                <flux:link
-                                                    href="{{ route('churches.create', [$this->ministry, $this->event]) }}"
-                                                    wire:navigate>
-                                                    {{ __('Add Church') }}</flux:link>
-                                            </div>
-                                        @endif
-
-
-                                    </flux:select>
-
-                                </flux:table.cell>
-                            </flux:table.row>
-                        @endforeach
-                    </flux:table.rows>
-                </flux:table>
-                <div class="flex">
-                    <flux:spacer />
-                    <flux:button class="mt-6" type="submit">Speichern</flux:button>
-                </div>
-            </form>
+            </div>
         </flux:card>
     @endif
     @if (!$this->newForeignContacts->isEmpty())
@@ -219,25 +219,36 @@
                                     </div>
                                 </flux:table.cell>
 
-                                <flux:table.cell class="justify-end flex gap-2">
-                                    <flux:modal.trigger name="contact-submitted">
+                                <flux:table.cell align="end">
+                                    <flux:modal.trigger name="contact-submitted-{{ $contact->id }}">
                                         <flux:button icon="cog-6-tooth" class="cursor-pointer" />
                                     </flux:modal.trigger>
-                                    <flux:modal name="contact-submitted" class="max-w-sm">
-                                        <div class="space-y-4">
-                                            <flux:heading>Kontakt bearbeiten</flux:heading>
-                                            <flux:text>Falls die Person doch aus {{ $this->event->city }} kommt, kannst
-                                                du das hier bearbeiten
+                                    <flux:modal name="contact-submitted-{{ $contact->id }}" class="max-w-sm">
+                                        <div class="space-y-4 text-start">
+                                            <flux:heading size="lg">{{ $contact->name }}</flux:heading>
+                                            <flux:heading>{{ __('Edit Contact') }}</flux:heading>
+                                            <div class="flex items-center gap-4">
+                                                <flux:text>Falls die Person doch aus {{ $this->event->city }} kommt,
+                                                    kannst
+                                                    du das hier bearbeiten
+                                                </flux:text>
+                                                <flux:button variant="ghost" wire:navigate
+                                                    href="{{ route('contacts.edit', [$this->ministry, $this->event, $contact]) }}"
+                                                    icon="pencil-square" />
+                                            </div>
+                                            <flux:separator />
+                                            <flux:text>{{ __('Were you able to connect the person to a church?') }}
                                             </flux:text>
-                                            <flux:button wire:navigate
-                                                href="{{ route('contacts.edit', [$this->ministry, $this->event, $contact]) }}"
-                                                icon="pencil-square" />
-                                            <flux:text>Konntest du den Kontakt übermitteln?</flux:text>
-                                            <flux:text>Wenn du bestätigst, ist der Kontakt hier nicht mehr sichtbar!
-                                            </flux:text>
+                                            <flux:field>
+                                                <flux:label>{{ __('Name Church') }}</flux:label>
+                                                <flux:input type="text" wire:model="contactChurch"
+                                                    placeholder="Name der Kirche" />
+                                                <flux:error name="contactChurch" />
+                                            </flux:field>
                                             <div class="flex justify-end">
-                                                <flux:button variant="primary" class="cursor-pointer">Übermittlung
-                                                    abschliessen</flux:button>
+                                                <flux:button variant="primary" class="cursor-pointer"
+                                                    wire:click="assignChurchName({{ $contact->id }})">
+                                                    {{ __('Save') }}</flux:button>
                                             </div>
                                         </div>
 
