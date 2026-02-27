@@ -1,9 +1,7 @@
 <div>
     <div class="space-y-4">
-        <flux:heading size="xl">
-            {{ $this->church->name }}</flux:heading>
 
-        <x-partials.header heading="{{ $event->name . ' - ' . $event->city }}" />
+        <x-partials.header heading="{{ __('Manage') }}" />
         <div>
             <flux:breadcrumbs>
                 @can('view', $this->ministry)

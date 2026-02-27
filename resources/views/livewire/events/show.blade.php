@@ -1,11 +1,8 @@
 <div class="space-y-6">
 
     <div class="space-y-4">
-        <flux:heading class="" size="xl">
-            {{ $event->name . ' - ' . $event->city }}</flux:heading>
 
-        <x-partials.header heading="{{ $date_range['start'] }} -
-                {{ $date_range['end'] }}" />
+        <x-partials.header heading="{{ $event->name . ' - ' . $event->city }}" />
 
         @can('view', $this->ministry)
             <div>

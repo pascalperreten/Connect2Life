@@ -63,7 +63,8 @@
                         </div>
                     @else
                         <flux:heading class="text-xl text-white">{{ __('There are no Churches yet') }}</flux:heading>
-                        <flux:button href="{{ route('churches.create', [$this->ministry, $this->event]) }}"
+                        <flux:button
+                            href="{{ route('churches.index', [$this->ministry, $this->event, 'q' => 'create']) }}"
                             wire:navigate>{{ __('Add Church') }}</flux:button>
                     @endif
                 </div>
@@ -239,17 +240,19 @@
                                             <flux:separator />
                                             <flux:text>{{ __('Were you able to connect the person to a church?') }}
                                             </flux:text>
-                                            <flux:field>
-                                                <flux:label>{{ __('Name Church') }}</flux:label>
-                                                <flux:input type="text" wire:model="contactChurch"
-                                                    placeholder="Name der Kirche" />
-                                                <flux:error name="contactChurch" />
-                                            </flux:field>
-                                            <div class="flex justify-end">
-                                                <flux:button variant="primary" class="cursor-pointer"
-                                                    wire:click="assignChurchName({{ $contact->id }})">
-                                                    {{ __('Save') }}</flux:button>
-                                            </div>
+                                            <form wire:submit.prevent="assignChurchName({{ $contact->id }})">
+                                                <flux:field>
+                                                    <flux:label>{{ __('Name Church') }}</flux:label>
+                                                    <flux:input type="text" wire:model="church_name"
+                                                        placeholder="Name der Kirche" />
+                                                    <flux:error name="church_name" />
+                                                </flux:field>
+                                                <div class="flex justify-end mt-6">
+                                                    <flux:button variant="primary" class="cursor-pointer"
+                                                        type="submit">
+                                                        {{ __('Save') }}</flux:button>
+                                                </div>
+                                            </form>
                                         </div>
 
 

@@ -1,9 +1,7 @@
 <div>
     <div class="space-y-4">
-        <flux:heading size="xl">
-            {{ $this->church->name }}</flux:heading>
 
-        <x-partials.header heading="{{ $event->name . ' - ' . $event->city }}" />
+        <x-partials.header heading="{{ $this->church->name }}" />
 
         @can('view', $this->event)
             <div>
@@ -16,8 +14,6 @@
                         wire:navigate>
                         {{ $this->event->name }} - {{ $this->event->city }}
                     </flux:breadcrumbs.item>
-
-                    <flux:breadcrumbs.item>{{ $this->church->name }}</flux:breadcrumbs.item>
                 </flux:breadcrumbs>
             </div>
             <flux:separator />
@@ -107,7 +103,6 @@
                     </div>
                 </div>
             </flux:card>
-            <livewire:contacts-table :church="$this->church" />
         </livewire:church-nav>
     </div>
     <flux:toast />

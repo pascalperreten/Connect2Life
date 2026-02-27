@@ -54,6 +54,14 @@ new class extends Component {
                         <i class="text-lg fa-regular fa-users"></i>
                     </flux:navlist.item>
 
+                    <flux:navlist.item wire:navigate x-show="open" href="{{ route('ministry.stats', $this->ministry) }}">
+                        <i class="fa-regular fa-chart-line mr-2"></i>
+                        {{ __('Statistics') }}
+                    </flux:navlist.item>
+                    <flux:navlist.item x-show="!open" wire:navigate href="{{ route('ministry.stats', $this->ministry) }}">
+                        <i class="text-lg fa-regular fa-chart-line"></i>
+                    </flux:navlist.item>
+
                     <flux:navlist.item wire:navigate x-show="open"
                         href="{{ route('ministry.details', $this->ministry) }}">
                         <i class="fa-regular fa-pen-to-square mr-2"></i>
@@ -62,13 +70,6 @@ new class extends Component {
                     <flux:navlist.item x-show="!open" wire:navigate
                         href="{{ route('ministry.details', $this->ministry) }}">
                         <i class="text-lg fa-regular fa-pen-to-square"></i>
-                    </flux:navlist.item>
-                    <flux:navlist.item wire:navigate x-show="open" href="{{ route('ministry.stats', $this->ministry) }}">
-                        <i class="fa-regular fa-chart-line mr-2"></i>
-                        {{ __('Edit') }}
-                    </flux:navlist.item>
-                    <flux:navlist.item x-show="!open" wire:navigate href="{{ route('ministry.stats', $this->ministry) }}">
-                        <i class="text-lg fa-regular fa-chart-line"></i>
                     </flux:navlist.item>
                 </flux:navlist>
             </div>

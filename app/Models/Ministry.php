@@ -34,7 +34,15 @@ class Ministry extends Model
         return $this->hasMany(Event::class);
     }
 
+    public function decisions(): HasManyThrough {
+        return $this->hasManyThrough(Decision::class, Event::class);
+    }
+
     public function contacts(): HasManyThrough {
         return $this->hasManyThrough(Contact::class, Event::class);
+    }
+    
+    public function gospelShares(): HasManyThrough {
+        return $this->hasManyThrough(GospelShare::class, Event::class);
     }
 }

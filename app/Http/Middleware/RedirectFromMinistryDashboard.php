@@ -19,7 +19,7 @@ class RedirectFromMinistryDashboard
         $ministry = $request->ministry;
 
         if($user->role === 'follow_up') {
-            return redirect()->route('events.show', [$user->ministry, $user->event]);
+            return redirect()->route('events.show', [$user->ministry, $user->events->first()]);
         }
         if(in_array($user->role, ['pastor', 'ambassador', 'church_member'])) {
             return redirect()->route('churches.show', [$ministry, $user->church->event, $user->church]);

@@ -3,9 +3,11 @@
 use Livewire\Component;
 use App\Models\Event;
 use App\Models\Ministry;
+use App\Models\Church;
 use Flux\Flux;
 
 new class extends Component {
+    public $search = '';
     public Event $event;
     public Ministry $ministry;
 
@@ -19,6 +21,19 @@ new class extends Component {
     {
         $address = $church->street . ', ' . $church->postal_code . ' ' . $church->city;
         return $address;
+    }
+
+    public function churches()
+    {
+        return Church::where('event_id', $this->event->id)
+            ->where('name', 'like', "%{$this->search}%")
+            ->orderBy('name')
+            ->get();
+    }
+
+    public function searchReset()
+    {
+        $this->search = '';
     }
 
     public function deleteChurch($churchId)
@@ -36,7 +51,16 @@ new class extends Component {
 };
 ?>
 
-<div>
+<div class="space-y-6">
+    <div class="flex gap-2">
+        <div class="w-60">
+            <flux:input type="text" wire:model.live="search" placeholder="{{ __('Search churches...') }}" />
+        </div>
+        @if ($this->search !== '')
+            <flux:button icon="x-mark" wire:click="searchReset" />
+        @endif
+
+    </div>
     <flux:table>
         <flux:table.columns sticky>
             <flux:table.column>Name</flux:table.column>
@@ -50,7 +74,7 @@ new class extends Component {
         </flux:table.columns>
 
         <flux:table.rows>
-            @foreach ($event->churches as $church)
+            @foreach ($this->churches() as $church)
                 <flux:table.row :key="$church->id">
                     <flux:table.cell>{{ $church->name }}
                     </flux:table.cell>
@@ -143,15 +167,13 @@ new class extends Component {
                             </flux:dropdown>
                         @endif
                     </flux:table.cell>
-                    @can('view', $church)
-                        <flux:table.cell>
-                            <div class="flex justify-end">
-                                <a href="{{ route('churches.show', [$ministry, $event, $church]) }}" wire:navigate>
-                                    <flux:icon.arrow-right-circle />
-                                </a>
-                            </div>
-                        </flux:table.cell>
-                    @endcan
+                    <flux:table.cell>
+                        <div class="flex justify-end">
+                            <a href="{{ route('churches.show', [$ministry, $event, $church]) }}" wire:navigate>
+                                <flux:icon.arrow-right-circle />
+                            </a>
+                        </div>
+                    </flux:table.cell>
                 </flux:table.row>
             @endforeach
         </flux:table.rows>

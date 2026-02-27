@@ -41,6 +41,9 @@ class Edit extends Component
             text: __('The account has been updated successfully.'),
             variant: 'success',
         );
+        if($this->form->role === 'church_member') {
+            $this->redirect(route('churches.contacts', [$this->ministry, $this->member->church->event, $this->member->church]), navigate: true);
+        }
     }
 
     public function sendInvitation() {

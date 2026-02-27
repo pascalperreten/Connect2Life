@@ -11,16 +11,17 @@
 
 
             <form class="space-y-6">
-
-                <flux:select variant="listbox" label="{{ __('Follow-Up Person') }}"
-                    wire:model.change="form.follow_up_person" placeholder="{{ __('Select a follow-up person') }}"
-                    description="{{ __('Who will follow up with this person?') }}">
-                    @foreach ($contact->church->members as $member)
-                        <flux:select.option :value="$member->id">
-                            {{ $member->first_name . ' ' . $member->last_name }}
-                        </flux:select.option>
-                    @endforeach
-                </flux:select>
+                @can('update', $contact->church)
+                    <flux:select variant="listbox" label="{{ __('Follow-Up Person') }}"
+                        wire:model.change="form.follow_up_person" placeholder="{{ __('Select a follow-up person') }}"
+                        description="{{ __('Who will follow up with this person?') }}">
+                        @foreach ($contact->church->members as $member)
+                            <flux:select.option :value="$member->id">
+                                {{ $member->first_name . ' ' . $member->last_name }}
+                            </flux:select.option>
+                        @endforeach
+                    </flux:select>
+                @endcan
 
                 <flux:heading size="lg">{{ __('Get in touch') }}</flux:heading>
 

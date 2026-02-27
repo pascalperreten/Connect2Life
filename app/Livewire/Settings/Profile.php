@@ -12,7 +12,7 @@ class Profile extends Component
 {
     public string $first_name = '';
     public string $last_name = '';
-
+    public $phone;
     public string $email = '';
 
     /**
@@ -22,6 +22,7 @@ class Profile extends Component
     {
         $this->first_name = Auth::user()->first_name;
         $this->last_name = Auth::user()->last_name;
+        $this->phone = Auth::user()->phone;
         $this->email = Auth::user()->email;
     }
 
@@ -35,7 +36,7 @@ class Profile extends Component
         $validated = $this->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-
+            'phone' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
                 'string',

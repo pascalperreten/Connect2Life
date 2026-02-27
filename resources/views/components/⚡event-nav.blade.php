@@ -17,7 +17,7 @@ new class extends Component {
 
 <div>
     <div class="flex">
-        @can('update', $this->event)
+        @can('view', $this->event)
             <div x-data="{ open: false }" class="sticky hidden sm:block top-5 h-full border rounded p-2 mr-6">
                 <span class="text-center">
                     <flux:button x-on:click="open = true" class="p-4 cursor-pointer w-full" x-show="!open" size="xs"
@@ -31,11 +31,6 @@ new class extends Component {
                 <flux:navlist>
 
                     <div x-show="open">
-                        <flux:navlist.item wire:navigate href="{{ route('events.index', $this->ministry) }}">
-                            <i class="fa-regular fa-arrow-left mr-2"></i>
-                            Events
-                        </flux:navlist.item>
-
                         <flux:navlist.item wire:navigate href="{{ route('events.show', [$this->ministry, $this->event]) }}">
                             <i class="fa-solid fa-microphone-stand mr-2"></i>
                             {{ $event->name }} | {{ $event->city }}
@@ -54,23 +49,20 @@ new class extends Component {
                         </flux:navlist.item>
 
                         <flux:navlist.item wire:navigate
-                            href="{{ route('events.manage', [$this->ministry, $this->event]) }}">
-                            <i class="fa-regular fa-gear mr-2"></i>
-                            {{ __('Manage') }}
-                        </flux:navlist.item>
-
-                        <flux:navlist.item wire:navigate
                             href="{{ route('events.stats', [$this->ministry, $this->event]) }}">
-                            <i class="fa-regular fa-chart-bar mr-2"></i>
+                            <i class="fa-regular fa-chart-line mr-2"></i>
                             {{ __('Statistics') }}
                         </flux:navlist.item>
+                        @can('update', $this->event)
+                            <flux:navlist.item wire:navigate
+                                href="{{ route('events.manage', [$this->ministry, $this->event]) }}">
+                                <i class="fa-regular fa-gear mr-2"></i>
+                                {{ __('Manage') }}
+                            </flux:navlist.item>
+                        @endcan
                     </div>
 
                     <div x-show="!open">
-
-                        <flux:navlist.item wire:navigate href="{{ route('events.index', $this->ministry) }}">
-                            <i class="text-lg fa-regular fa-arrow-left"></i>
-                        </flux:navlist.item>
                         <flux:navlist.item wire:navigate
                             href="{{ route('events.show', [$this->ministry, $this->event]) }}">
                             <i class="text-lg fa-solid fa-microphone-stand"></i>
@@ -84,13 +76,15 @@ new class extends Component {
                             <i class="text-lg fa-regular fa-user"></i>
                         </flux:navlist.item>
                         <flux:navlist.item wire:navigate
-                            href="{{ route('events.manage', [$this->ministry, $this->event]) }}">
-                            <i class="text-lg fa-regular fa-gear"></i>
-                        </flux:navlist.item>
-                        <flux:navlist.item wire:navigate
                             href="{{ route('events.stats', [$this->ministry, $this->event]) }}">
-                            <i class="text-lg fa-regular fa-chart-bar"></i>
+                            <i class="text-lg fa-regular fa-chart-line"></i>
                         </flux:navlist.item>
+                        @can('update', $this->event)
+                            <flux:navlist.item wire:navigate
+                                href="{{ route('events.manage', [$this->ministry, $this->event]) }}">
+                                <i class="text-lg fa-regular fa-gear"></i>
+                            </flux:navlist.item>
+                        @endcan
                     </div>
                 </flux:navlist>
             </div>
@@ -98,12 +92,6 @@ new class extends Component {
                 class="fixed max-w-full overflow-x-auto sm:hidden flex justify-center bottom-0 left-0 right-0 bg-white dark:bg-zinc-900 w-full z-20 border-t-2 border-cyan-700 p-2">
 
                 <flux:navbar>
-                    {{-- <flux:navbar.item wire:navigate href="{{ route('ministry', $this->ministry) }}">
-                        <i class="text-2xl fa-regular fa-house"></i>
-                    </flux:navbar.item> --}}
-                    <flux:navbar.item wire:navigate href="{{ route('events.index', $this->ministry) }}">
-                        <i class="text-2xl fa-regular fa-arrow-left"></i>
-                    </flux:navbar.item>
                     <flux:navbar.item wire:navigate href="{{ route('events.show', [$this->ministry, $this->event]) }}">
                         <i class="text-2xl fa-solid fa-microphone-stand"></i>
                     </flux:navbar.item>
@@ -113,12 +101,14 @@ new class extends Component {
                     <flux:navbar.item wire:navigate href="{{ route('contacts.index', [$this->ministry, $this->event]) }}">
                         <i class="text-2xl fa-regular fa-user"></i>
                     </flux:navbar.item>
-                    <flux:navbar.item wire:navigate href="{{ route('events.manage', [$this->ministry, $this->event]) }}">
-                        <i class="text-2xl fa-regular fa-gear"></i>
-                    </flux:navbar.item>
                     <flux:navbar.item wire:navigate href="{{ route('events.stats', [$this->ministry, $this->event]) }}">
-                        <i class="text-2xl fa-regular fa-chart-bar"></i>
+                        <i class="text-2xl fa-regular fa-chart-line"></i>
                     </flux:navbar.item>
+                    @can('update', $this->event)
+                        <flux:navbar.item wire:navigate href="{{ route('events.manage', [$this->ministry, $this->event]) }}">
+                            <i class="text-2xl fa-regular fa-gear"></i>
+                        </flux:navbar.item>
+                    @endcan
                 </flux:navbar>
             </div>
         @endcan

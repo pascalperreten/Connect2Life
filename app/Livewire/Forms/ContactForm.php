@@ -8,6 +8,7 @@ use App\Models\Contact;
 use App\Models\Event;
 use App\Models\Church;
 use App\Models\Decision;
+use App\Models\GospelShares;
 use App\Models\ManageFollowUp;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -49,8 +50,9 @@ class ContactForm extends Form
     public string $city = '';
     public bool $assigned = false;
     public string $comments = '';
-    public string $decision = '';
+    public bool $decision = false;
     public string $evangelist_name = '';
+    public string $decision_evangelist_name = '';
     public $follow_up_person;
     public $event_id;
     public $church_id = null;
@@ -244,8 +246,12 @@ class ContactForm extends Form
     }
 
     public function addDecisions(Event $event) {
-        $this->validateOnlyStep(['number_of_decisions']);
-        $event->increment('decisions_without_contact_details', $this->number_of_decisions);
+        $this->validateOnlyStep(['number_of_decisions', 'decision_evangelist_name']);
+        Decision::create([
+            'event_id' => $event->id,
+            'number_of_decisions' => $this->number_of_decisions,
+            'evangelist_name' => $this->decision_evangelist_name,
+        ]);
         $this->reset();
     }
 
@@ -256,7 +262,7 @@ class ContactForm extends Form
         $this->contact_information = ['email' => $this->email];
         } elseif($this->way_to_get_in_contact === 'social_media') {
         $this->contact_information = ['social_media' => $this->social_platform, 'user_name' => $this->user_name, 'url' => $this->url];
-            if($this->social_platform === 'other'){
+            if($this->social_platform === 'other_platform'){
                 $this->contact_information = ['social_media' => $this->other_platform];
             }
         } elseif($this->way_to_get_in_contact === 'other') {
@@ -275,6 +281,8 @@ class ContactForm extends Form
             'postal_code' => 'required',
             'decision' => 'required|boolean',
             'evangelist_name' => 'required|string|max:255',
+            'decision_evangelist_name' => 'required|string|max:255',
+            'gospel_shares_evangelist_name' => 'required|string|max:255',
             'comments' => 'nullable|string',
             'phone' => 'required|regex:/^\+?[0-9\s\-]{7,15}$/|max:255',
             'email' => 'required|email|max:255',
@@ -287,6 +295,7 @@ class ContactForm extends Form
             'districts' => 'required|array',
             'district' => 'required',
             'number_of_decisions' => 'required|int',
+            'number_of_gospel_shares' => 'required|int',
             'contacted_date' => 'date',
             'meeting_date' => 'date|after:contacted_date'
         ];

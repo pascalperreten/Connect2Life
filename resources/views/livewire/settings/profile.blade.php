@@ -7,6 +7,7 @@
                 autocomplete="given-name" />
             <flux:input wire:model="last_name" :label="__('Last Name')" type="text" required autofocus
                 autocomplete="family-name" />
+            <flux:input wire:model="phone" :label="__('Phone')" type="text" required autofocus autocomplete="tel" />
 
             <div>
                 <flux:input wire:model="email" :label="__('Email')" type="email" required autocomplete="email" />

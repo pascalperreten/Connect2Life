@@ -1,20 +1,15 @@
 <div class="space-y-6">
     <div class="space-y-4">
-
-        <flux:heading size="xl">{{ $this->ministry->name }}</flux:heading>
-
-        <x-partials.header heading="Mitglieder" />
+        <x-partials.header heading="{{ __('Members') }}" />
         @can('update', $this->ministry)
-            <div>
-                <flux:breadcrumbs>
-                    <flux:breadcrumbs.item href="{{ route('ministry', $this->ministry) }}" wire:navigate>
-                        {{ $this->ministry->name }}
-                    </flux:breadcrumbs.item>
-                    <flux:breadcrumbs.item>{{ __('Members') }}</flux:breadcrumbs.item>
-                </flux:breadcrumbs>
-            </div>
+            <flux:breadcrumbs>
+                <flux:breadcrumbs.item href="{{ route('ministry', $this->ministry) }}" wire:navigate>
+                    {{ $this->ministry->name }}
+                </flux:breadcrumbs.item>
+            </flux:breadcrumbs>
             <flux:separator />
         @endcan
+
     </div>
     <livewire:ministry-nav :ministry="$this->ministry">
         <div class="sm:p-6 sm:rounded-xl sm:border">

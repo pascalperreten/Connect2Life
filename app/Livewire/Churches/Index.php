@@ -13,10 +13,14 @@ class Index extends Component
 
     public Ministry $ministry;
     public Event $event;
+    public $activeTab = 'churches';
 
     public function mount(Ministry $ministry, Event $event) {
         $this->ministry = $ministry;
         $this->event = $event;
+        if(request()->has('q') && request()->get('q') === 'create') {
+            $this->activeTab = 'add_church';
+        }
     }
     public function mapsUrl($church)
     {

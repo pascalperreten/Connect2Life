@@ -1,10 +1,8 @@
 <div class="space-y-6">
     <div class="space-y-4">
-        <flux:heading class="" size="xl">
-            {{ __('Manage') }}</flux:heading>
 
-        <x-partials.header heading="{{ $this->event->name }} - {{ $this->event->city }}" />
-        <div>
+        <x-partials.header heading="{{ __('Manage') }}" />
+        @can('view', $this->ministry)
             <flux:breadcrumbs>
                 <flux:breadcrumbs.item href="{{ route('ministry', $this->ministry) }}" wire:navigate>
                     {{ $this->ministry->name }}
@@ -12,10 +10,10 @@
                 <flux:breadcrumbs.item href="{{ route('events.show', [$this->ministry, $this->event]) }}" wire:navigate>
                     {{ $this->event->name }} - {{ $this->event->city }}
                 </flux:breadcrumbs.item>
-                <flux:breadcrumbs.item>{{ __('Manage') }}</flux:breadcrumbs.item>
             </flux:breadcrumbs>
-        </div>
-        <flux:separator />
+            <flux:separator />
+        @endcan
+
     </div>
 
     <livewire:event-nav :ministry="$this->ministry" :event="$this->event">
@@ -26,7 +24,7 @@
                         <flux:tab name="language">
                             <div class="space-y-2">
                                 <div class="flex justify-center">
-                                    <flux:icon.language />
+                                    <i class="fa-regular fa-language text-xl"></i>
                                 </div>
                                 <span class="hidden md:block">{{ __('Languages') }}</span>
                             </div>
@@ -34,7 +32,7 @@
                         <flux:tab name="district">
                             <div class="space-y-2">
                                 <div class="flex justify-center">
-                                    <flux:icon.map />
+                                    <i class="fa-regular fa-map text-xl"></i>
                                 </div>
                                 <span class="hidden md:block">{{ __('Districts') }}</span>
                             </div>
@@ -42,7 +40,7 @@
                         <flux:tab name="postal_codes">
                             <div class="space-y-2">
                                 <div class="flex justify-center">
-                                    <flux:icon.map-pin />
+                                    <i class="fa-regular fa-location-dot text-xl"></i>
                                 </div>
                                 <span class="hidden md:block">{{ __('Postal Codes') }}</span>
                             </div>
@@ -50,7 +48,7 @@
                         <flux:tab name="form">
                             <div class="space-y-2">
                                 <div class="flex justify-center">
-                                    <flux:icon.chat-bubble-left-right />
+                                    <i class="fa-regular fa-comments text-xl"></i>
                                 </div>
                                 <span class="hidden md:block">{{ __('Follow-up Form') }}</span>
                             </div>
@@ -58,9 +56,17 @@
                         <flux:tab name="evangelize">
                             <div class="space-y-2">
                                 <div class="flex justify-center">
-                                    <flux:icon.megaphone />
+                                    <i class="fa-regular fa-bullhorn text-xl"></i>
                                 </div>
                                 <span class="hidden md:block">{{ __('Evangelize') }}</span>
+                            </div>
+                        </flux:tab>
+                        <flux:tab name="gospel_shares">
+                            <div class="space-y-2">
+                                <div class="flex justify-center">
+                                    <i class="fa-regular fa-calculator text-xl"></i>
+                                </div>
+                                <span class="hidden md:block">{{ __('Gospel Shares') }}</span>
                             </div>
                         </flux:tab>
                     </div>
@@ -80,6 +86,9 @@
 
                 <flux:tab.panel name="evangelize">
                     <livewire:manage.evangelize :ministry="$this->ministry" :event="$this->event" />
+                </flux:tab.panel>
+                <flux:tab.panel name="gospel_shares">
+                    <livewire:add-gospel-shares :ministry="$this->ministry" :event="$this->event" />
                 </flux:tab.panel>
 
             </flux:tab.group>

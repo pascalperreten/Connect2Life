@@ -21,14 +21,21 @@
             <div class="justify-self-start">
                 <livewire:toggle-language />
             </div>
-            @if (request()->route()->ministry->logo_path)
+            @if (!request()->is('settings/*'))
                 <div class="justify-self-center">
-                    <div class="w-30 md:w-50 flex justify-center">
-                        <img class="max-h-10 max-w-full"
-                            src="{{ asset('storage/' . request()->route()->ministry->logo_path) }}">
-                    </div>
+                    <livewire:logo :ministry="request()->route()->ministry" />
+                </div>
+            @else
+                <div class="justify-self-center">
+                    <flux:navbar>
+                        <flux:navbar.item :href="route('dashboard', auth()->user()->ministry)" icon="arrow-left"
+                            wire:navigate>
+                            {{ __('Back') }}
+                        </flux:navbar.item>
+                    </flux:navbar>
                 </div>
             @endif
+
             <!-- Desktop User Menu -->
             @if (auth()->user())
                 <div class="col-start-3 justify-self-end">

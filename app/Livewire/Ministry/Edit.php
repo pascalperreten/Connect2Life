@@ -22,32 +22,6 @@ class Edit extends Component
     public $currentLogoPath;
     public $currentLogo;
 
-    public function removePhoto()
-    {
-        $this->logo->delete();
-
-        $this->logo = null;
-    }
-
-    public function deleteLogo() {
-        $this->ministry->update([
-            'logo_path' => null,
-            'logo_name' => null,
-        ]);
-
-        Storage::disk('public')->delete($this->currentLogoPath);
-
-        $this->currentLogo = null;
-        $this->setMinistry();
-        $this->modal('delete-logo')->close();
-
-        Flux::toast(
-            heading: __('Logo deleted'),
-            text: __('The logo has been deleted successfully.'),
-            variant: 'success',
-        );
-    }
-
     #[Validate('required|string|max:255')]
     public $name = '';
 
@@ -68,6 +42,32 @@ class Edit extends Component
         
     }
 
+    public function removePhoto()
+    {
+        $this->logo->delete();
+
+        $this->logo = null;
+    }
+
+    public function deleteLogo() {
+        $this->ministry->update([
+            'logo_path' => null,
+            'logo_name' => null,
+        ]);
+
+        Storage::disk('public')->delete($this->currentLogoPath);
+
+        $this->currentLogo = null;
+        // $this->setMinistry();
+        // $this->modal('delete-logo')->close();
+        Flux::toast(
+            heading: __('Logo deleted'),
+            text: __('The logo has been deleted successfully.'),
+            variant: 'success',
+        );
+        $this->dispatch('logoUpdated');
+    }
+
     public function update() {
         //$this->authorize('update', $this->ministry);
         $this->validate();
@@ -75,6 +75,7 @@ class Edit extends Component
         if($this->logo) {
             $path = $this->logo->store('images', 'public');
             $name = $this->logo->getClientOriginalName();
+            Storage::disk('public')->delete($this->currentLogoPath);
         } else {
             $path = $this->currentLogoPath;
             $name = $this->currentLogoName;
@@ -86,6 +87,7 @@ class Edit extends Component
             'logo_name' => $name,
         ]);
         
+        $this->dispatch('logoUpdated');
         $this->setMinistry();
         $this->logo = null;
         Flux::toast(
@@ -93,6 +95,7 @@ class Edit extends Component
             text: __('Your changes have been saved successfully.'),
             variant: 'success',
         );
+        
     }
 
     public function delete() {

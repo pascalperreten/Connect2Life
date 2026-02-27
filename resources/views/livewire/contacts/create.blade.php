@@ -1,15 +1,13 @@
 <div>
-    <flux:heading class="text-center" size="xl">
+    <flux:heading class="text-center" size="lg">
         {{ $this->event->name }} | {{ __($this->event->city) }}
         @if (isset($this->church))
             {{ ' | ' . $this->church->name }}
         @endif
     </flux:heading>
-    <div class="border-b border-zinc-200 pb-4">
-        <flux:heading class="text-center">{{ __('Evangelize') }}</flux:heading>
-    </div>
+    <flux:separator class="my-6" />
 
-    <div class="mt-6 max-w-md m-auto">
+    <div class="max-w-md m-auto">
         @if ($this->success_message !== '')
             <div class=>
                 <flux:card class="text-center space-y-6 p-10 m-auto max-w-md">
@@ -23,17 +21,16 @@
         @else
             <form wire:submit.prevent="save" class="space-y-6">
                 <flux:tab.group>
-                    <div class="text-center">
-                        <flux:tabs class="w-full" variant="segmented" wire:model="with_contact">
-                            <flux:tab wire:click="resetNumbers" name="true">{{ __('With contact details') }}
-                            </flux:tab>
-                            <flux:tab wire:click="resetContact" name="false">{{ __('Without contact details') }}
-                            </flux:tab>
-                        </flux:tabs>
-                    </div>
+                    <flux:tabs variant="segmented" class="w-full" wire:model="with_contact">
+                        <flux:tab wire:click="resetNumbers" name="with_contact">
+                            {{ __('With contact details') }}
+                        </flux:tab>
+                        <flux:tab wire:click="resetContact" name="without_contact">
+                            {{ __('Without contact details') }}
+                        </flux:tab>
+                    </flux:tabs>
 
-
-                    <flux:tab.panel class="space-y-6" name="true">
+                    <flux:tab.panel class="space-y-6" name="with_contact">
                         @if (!$this->approved)
                             <flux:heading>{{ __('Approval for sharing contact information') }}</flux:heading>
                             <flux:text>
@@ -264,7 +261,7 @@
 
 
                     </flux:tab.panel>
-                    <flux:tab.panel class="space-y-6" name="false">
+                    <flux:tab.panel class="space-y-6" name="without_contact">
                         <flux:field>
                             <flux:label>{{ __('Number of Decisions') }}<span class="text-red-500">*</span>
                             </flux:label>
@@ -272,6 +269,14 @@
                                 type="number" />
                             <flux:error name="form.number_of_decisions" />
                         </flux:field>
+                        @if ($this->form->form_fields->evangelist_name)
+                            <flux:field>
+                                <flux:label>Name Evangelist<span class="text-red-500">*</span></flux:label>
+                                <flux:input wire:key="decision_evangelist_name"
+                                    wire:model="form.decision_evangelist_name" type="text" autocomplete="name" />
+                                <flux:error name="form.decision_evangelist_name" />
+                            </flux:field>
+                        @endif
                         <flux:button type="button" wire:click="addDecisions"
                             class="bg-cyan-700 hover:bg-cyan-800 w-full" variant="primary">
                             {{ __('Save') }}

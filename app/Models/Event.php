@@ -19,8 +19,6 @@ class Event extends Model
     protected $fillable = [
         'name',
         'city',
-        'start_date',
-        'end_date',
         'ministry_id',
         'slug',
         'logo_path',
@@ -37,8 +35,6 @@ class Event extends Model
     protected function casts(): array
     {
         return [
-            'start_date' => 'date',
-            'end_date' => 'date',
             'active_invitation_link' => 'boolean',
         ];
     }
@@ -71,7 +67,15 @@ class Event extends Model
         return $this->hasMany(District::class);
     }
 
+    public function decisions(): HasMany {
+        return $this->hasMany(Decision::class);
+    }
+
     public function contactForm(): HasOne {
         return $this->hasOne(ContactForm::class);
+    }
+
+    public function gospelShares(): HasMany {
+        return $this->hasMany(GospelShare::class);
     }
 }

@@ -63,6 +63,11 @@
                     </flux:select>
                     <flux:error name="form.role" />
                 </flux:field>
+                @if (auth()->user()->role !== 'church_member' && $this->form->role === 'church_member')
+                    <flux:text class="text-red-500 text-sm">
+                        {{ __('If you change your role to Member, you will not be able to change it again!') }}
+                    </flux:text>
+                @endif
             @endif
             @if ($this->form->role === 'follow_up')
                 <flux:field>

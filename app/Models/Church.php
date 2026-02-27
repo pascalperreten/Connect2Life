@@ -44,8 +44,8 @@ class Church extends Model
     public function contacts(): HasMany {
         return $this->hasMany(Contact::class);
     }
-    public function letToJesus(): HasMany {
-        return $this->hasMany(Contact::class, 'church_of_evangelist_id', 'id');
+    public function contactsEvangelized(): HasMany {
+        return $this->hasMany(Contact::class, 'evangelist_church_id', 'id');
     }
     public function decisions(): HasMany {
         return $this->hasMany(Decision::class);

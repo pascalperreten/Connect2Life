@@ -16,7 +16,10 @@ class EventPolicy
     }
     
     public function view(User $authUser, Event $event) {
-        return in_array($authUser->role, ['admin', 'editor', 'follow_up']) && $authUser->ministry->id === $event->ministry_id;
+        if(in_array($authUser->role, ['follow_up'])) {
+            return $authUser->events->contains($event);
+        }
+        return in_array($authUser->role, ['admin', 'editor']) && $authUser->ministry->id === $event->ministry_id;
     } 
     public function create(User $authUser) {
             return in_array($authUser->role, ['admin', 'editor']);

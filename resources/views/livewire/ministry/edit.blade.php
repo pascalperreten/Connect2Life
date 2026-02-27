@@ -1,18 +1,16 @@
 <div class="space-y-6">
     <div class="space-y-4">
-        <flux:heading size="xl">{{ $this->ministry->name }}</flux:heading>
+
         <x-partials.header heading="Details" />
         @can('update', $this->ministry)
-            <div>
-                <flux:breadcrumbs>
-                    <flux:breadcrumbs.item href="{{ route('ministry', $this->ministry) }}" wire:navigate>
-                        {{ $this->ministry->name }}
-                    </flux:breadcrumbs.item>
-                    <flux:breadcrumbs.item>{{ __('Edit') }}</flux:breadcrumbs.item>
-                </flux:breadcrumbs>
-            </div>
+            <flux:breadcrumbs>
+                <flux:breadcrumbs.item href="{{ route('ministry', $this->ministry) }}" wire:navigate>
+                    {{ $this->ministry->name }}
+                </flux:breadcrumbs.item>
+            </flux:breadcrumbs>
             <flux:separator />
         @endcan
+
     </div>
     <livewire:ministry-nav :ministry="$this->ministry">
         <flux:card>
@@ -31,25 +29,20 @@
                     </flux:file-upload>
 
                     <div class="mt-3 flex flex-col gap-2">
-                        @if ($logo)
-                            <flux:file-item :heading="$logo->getClientOriginalName()" :image="$logo->temporaryUrl()"
-                                :size="$logo->getSize()">
-                                <x-slot name="actions">
-                                    <flux:file-item.remove wire:click="removePhoto"
-                                        aria-label="{{ 'Remove file: ' . $logo->getClientOriginalName() }}" />
-                                </x-slot>
-                            </flux:file-item>
-                        @endif
+
                         @if ($currentLogo)
+                            <flux:heading>
+                                {{ __('Current logo') }}
+                            </flux:heading>
                             <flux:card>
-                                <div class="grid sm:grid-cols-3 gap-4 grid-cols-2 items-center">
-                                    <flux:heading class="col-span-2 text-center sm:text-left sm:col-span-1">
-                                        {{ __('current logo') }}
-                                    </flux:heading>
-                                    <flux:text class="text-center">{{ $this->currentLogoName }}</flux:text>
+                                <div class="flex justify-between items-center">
+                                    <div class="h-10">
+                                        <img class="max-w-full max-h-full"
+                                            src="{{ asset('storage/' . $currentLogoPath) }}">
+                                    </div>
                                     <div class="flex justify-end">
                                         <flux:modal.trigger name="delete-logo">
-                                            <flux:icon.trash class="cursor-pointer text-red-500" />
+                                            <flux:button icon="trash" variant="ghost" />
                                         </flux:modal.trigger>
                                         <flux:modal name="delete-logo">
                                             <div class="space-y-4">
@@ -58,19 +51,35 @@
                                                 </flux:text>
                                                 <div class="flex">
                                                     <flux:spacer />
-                                                    <flux:button class="cursor-pointer" wire:click="deleteLogo"
-                                                        variant="danger">{{ __('Delete') }}</flux:button>
+                                                    <flux:button wire:click="deleteLogo" variant="danger">
+                                                        {{ __('Delete') }}</flux:button>
                                                 </div>
                                             </div>
                                         </flux:modal>
                                     </div>
                                 </div>
-                                <flux:separator class="mt-4" />
-                                <div class="flex p-4 justify-center max-w-md m-auto">
-                                    <img class="max-w-full max-h-full"
-                                        src="{{ asset('storage/' . $currentLogoPath) }}">
+                            </flux:card>
+                        @endif
+                        @if ($logo)
+                            <flux:heading>{{ __('New logo') }}</flux:heading>
+                            <flux:card>
+                                <div class="flex justify-between items-center">
+                                    <div class="h-10">
+                                        <img class="max-w-full max-h-full" src="{{ $logo->temporaryUrl() }}">
+                                    </div>
+                                    <div class="flex justify-end">
+                                        <flux:button icon="x-mark" class="text-red-500" wire:click="removePhoto"
+                                            variant="ghost" />
+                                    </div>
                                 </div>
                             </flux:card>
+                            {{-- <flux:file-item :heading="$logo->getClientOriginalName()" :image="$logo->temporaryUrl()"
+                                :size="$logo->getSize()">
+                                <x-slot name="actions">
+                                    <flux:file-item.remove wire:click="removePhoto"
+                                        aria-label="{{ 'Remove file: ' . $logo->getClientOriginalName() }}" />
+                                </x-slot>
+                            </flux:file-item> --}}
                         @endif
                     </div>
                 </div>

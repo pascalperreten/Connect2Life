@@ -32,7 +32,7 @@ class Create extends Component
     public Ministry $ministry;
     public ?Church $church = null;
 
-    public $with_contact = true;
+    public $tab = "with_contact";
 
     public $success_message = '';
 
@@ -64,7 +64,7 @@ class Create extends Component
     }
 
     public function resetNumbers() {
-        $this->reset('with_contact');
+        $this->reset('tab');
     }
     public function resetContact() {
         $this->approved = false;

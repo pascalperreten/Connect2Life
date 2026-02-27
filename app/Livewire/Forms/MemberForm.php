@@ -141,9 +141,6 @@ class MemberForm extends Form
             ]);
         }
 
-        
-        $this->reset('first_name', 'last_name', 'email');
-
         // Logic to send invitation
         $newMember->notify(new Invitation($newMember, $ministry));
     }
@@ -176,6 +173,9 @@ class MemberForm extends Form
             $this->validate($this->rules());
             
         }   
+        if($this->member->events->count() > 0 && $this->role !== 'follow_up') {
+            $this->events = [];
+        }
         
         $this->member->update($this->only(['first_name', 'last_name', 'email', 'phone', 'role']));
         $this->member->events()->sync($this->events);

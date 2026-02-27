@@ -69,8 +69,8 @@ Route::middleware(['set.locale'])->group(function () {
     Route::livewire('{ministry}/invitation/{token}', InviteMember::class)->name('invitation');
     Route::livewire('{ministry}/{event}/invitation/church/{token}', InviteChurch::class)->name('invitation.church')->middleware('signed');
     Route::livewire('{ministry}/{event}/evangelize', ContactCreate::class)->name('events.evangelize')->middleware('signed');
+    Route::livewire('{ministry}/{event}/evangelize/gospel-shares', 'pages::evangelize.gospel-shares')->name('evangelize.gospel-shares')->middleware('signed');
     Route::livewire('{ministry}/{event}/{church}/evangelize', ContactCreate::class)->name('churches.evangelize')->middleware('signed');
-    
     //Route::livewire('{church}/invitation/{token}', [Invitation::class, 'invite_church'])->name('church.invitation');
 
     Route::get('/', function () {
@@ -90,25 +90,30 @@ Route::middleware(['set.locale'])->group(function () {
             Route::livewire('events', EventIndex::class)->name('events.index');
             Route::livewire('events/create', EventCreate::class)->name('events.create')->can('update', 'ministry');
             Route::livewire('stats', 'pages::ministry.stats')->name('ministry.stats')->can('update', 'ministry');
+            Route::livewire('gospel-shares', 'pages::ministry.gospel-shares')->name('ministry.gospel-shares')->can('update', 'ministry');
         });
             
-        Route::prefix('{event}')->group(function() {
+        Route::prefix('{event}')->scopeBindings()->group(function() {
             Route::middleware(['redirect.event', 'can:view,event'])->group(function() {
                 Route::livewire('/', EventShow::class)->name('events.show');
                 Route::livewire('manage', EventManage::class)->name('events.manage')->can('update', 'event');
-                Route::livewire('stats', 'pages::event.stats')->name('events.stats');
+                Route::livewire('stats', 'pages::event.stats')->name('events.stats')->can('view', 'event');
+                Route::livewire('gospel-shares', 'pages::event.gospel-shares')->name('events.gospel-shares')->can('view', 'event');
                 Route::livewire('details', EventEdit::class)->name('events.details')->can('update', 'event');
                 Route::livewire('contacts', ContactIndex::class)->name('contacts.index');
+                Route::livewire('contacts/details', 'pages::contact.details')->name('events.contacts.details');
                 Route::livewire('contacts/{contact}', ContactShow::class)->name('contacts.show');
                 Route::livewire('contacts/{contact}/edit', ContactEdit::class)->name('contacts.edit')->can('update', 'contact');
                 Route::livewire('churches', ChurchIndex::class)->name('churches.index');
                 Route::livewire('churches/create', ChurchCreate::class)->name('churches.create');
             });
             
-            Route::prefix('{church}')->middleware('can:view,church')->group(function() {
-                Route::livewire('/', ChurchShow::class)->name('churches.show')->scopeBindings();
+            Route::prefix('{church}')->scopeBindings()->middleware('can:view,church')->group(function() {
+                Route::livewire('/', ChurchShow::class)->name('churches.show')->middleware('redirect.church')->can('update', 'church');
                 Route::livewire('manage', ChurchManage::class)->name('churches.manage')->can('update', 'church');
+                Route::livewire('stats', 'pages::church.stats')->name('churches.stats')->can('update', 'church');
                 Route::livewire('members', ChurchMembers::class)->name('churches.members')->can('update', 'church');
+                Route::livewire('contacts', 'pages::church.contact')->name('churches.contacts')->can('view', 'church');
             });
         });
     });

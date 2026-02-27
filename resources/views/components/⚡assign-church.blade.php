@@ -48,7 +48,8 @@ new class extends Component {
         <div class="text-start p-2 space-y-2">
             <flux:text class="text-red-400 text-xs font-bold">
                 {{ __('No church yet!') }}</flux:text>
-            <flux:link href="{{ route('churches.create', [$this->ministry, $this->event]) }}" wire:navigate>
+            <flux:link href="{{ route('churches.index', [$this->ministry, $this->event, 'q' => 'create']) }}"
+                wire:navigate>
                 {{ __('Add Church') }}</flux:link>
         </div>
     @endif

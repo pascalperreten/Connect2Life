@@ -46,11 +46,22 @@ new class extends Component {
                         </flux:navlist.item>
 
                         <flux:navlist.item wire:navigate
+                            href="{{ route('churches.contacts', [$this->ministry, $this->event, $church]) }}">
+                            <i class="fa-regular fa-user mr-2"></i>
+                            {{ __('Contacts') }}
+                        </flux:navlist.item>
+
+                        <flux:navlist.item wire:navigate
                             href="{{ route('churches.members', [$this->ministry, $this->event, $church]) }}">
                             <i class="fa-regular fa-users mr-2"></i>
                             {{ __('Members') }}
                         </flux:navlist.item>
 
+                        <flux:navlist.item wire:navigate
+                            href="{{ route('churches.stats', [$this->ministry, $this->event, $church]) }}">
+                            <i class="fa-regular fa-chart-line mr-2"></i>
+                            {{ __('Statistics') }}
+                        </flux:navlist.item>
                         <flux:navlist.item wire:navigate
                             href="{{ route('churches.manage', [$this->ministry, $this->event, $church]) }}">
                             <i class="fa-regular fa-gear mr-2"></i>
@@ -71,8 +82,16 @@ new class extends Component {
                             <i class="fa-solid fa-cross text-lg"></i>
                         </flux:navlist.item>
                         <flux:navlist.item wire:navigate
+                            href="{{ route('churches.contacts', [$this->ministry, $this->event, $church]) }}">
+                            <i class="fa-regular fa-user text-lg"></i>
+                        </flux:navlist.item>
+                        <flux:navlist.item wire:navigate
                             href="{{ route('churches.members', [$this->ministry, $this->event, $church]) }}">
                             <i class="fa-regular fa-users text-lg"></i>
+                        </flux:navlist.item>
+                        <flux:navlist.item wire:navigate
+                            href="{{ route('churches.stats', [$this->ministry, $this->event, $church]) }}">
+                            <i class="fa-regular fa-chart-line text-lg"></i>
                         </flux:navlist.item>
                         <flux:navlist.item wire:navigate
                             href="{{ route('churches.manage', [$this->ministry, $this->event, $church]) }}">
@@ -95,8 +114,16 @@ new class extends Component {
                         <i class="text-2xl fa-solid fa-cross"></i>
                     </flux:navbar.item>
                     <flux:navbar.item wire:navigate
+                        href="{{ route('churches.contacts', [$this->ministry, $this->event, $church]) }}">
+                        <i class="text-2xl fa-regular fa-user"></i>
+                    </flux:navbar.item>
+                    <flux:navbar.item wire:navigate
                         href="{{ route('churches.members', [$this->ministry, $this->event, $church]) }}">
                         <i class="text-2xl fa-regular fa-users"></i>
+                    </flux:navbar.item>
+                    <flux:navbar.item wire:navigate
+                        href="{{ route('churches.stats', [$this->ministry, $this->event, $church]) }}">
+                        <i class="text-2xl fa-regular fa-chart-line"></i>
                     </flux:navbar.item>
                     <flux:navbar.item wire:navigate
                         href="{{ route('churches.manage', [$this->ministry, $this->event, $church]) }}">

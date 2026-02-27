@@ -31,6 +31,7 @@ return new class extends Migration
             $table->boolean('assigned')->default(false);
             $table->foreignId('event_id')->constrained()->cascadeOnDelete();
             $table->foreignId('church_id')->nullable()->constrained()->nullOnDelete();
+            $table->string('church_name')->nullable();
             $table->boolean('invalid_contact_details')->default(false);
             $table->boolean('not_interested')->default(false);
             $table->date('contacted_date')->nullable();

@@ -18,6 +18,7 @@ new class extends Component
     public Event $event;
     public Ministry $ministry;
     public $class = '';
+    public $church_name;
     public $plzChurches = [];
     public $districtChurches = [];
     public $languageChurches = [];
@@ -120,6 +121,24 @@ new class extends Component
             $query->whereIn('languages.id', $languagesIds);
         })->get();
         return $churches;
+    }
+
+    public function assignChurchName($id) {
+        $this->validate([     
+            'church_name' => 'required|string|max:255',
+        ]);
+        $contact = Contact::findOrFail($id);
+        $contact->update([
+            'assigned' => true,
+            'church_name' => $this->church_name,
+        ]);
+        Flux::modals()->close();
+        $this->setNewForeignContacts();
+        Flux::toast(
+            heading: __('Contact assigned'),
+            text: __('The contact has been successfully assigned to the church.'),
+            variant: 'success',
+        );
     }
 
     public function updateChurch() {

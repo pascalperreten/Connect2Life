@@ -38,6 +38,7 @@ class Contact extends Model
         'evangelist_name',
         'event_id',
         'church_id',
+        'church_name',
         'evangelist_church_id',
         'follow_up_person',
     ];

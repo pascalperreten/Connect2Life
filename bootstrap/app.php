@@ -7,6 +7,7 @@ use App\Http\Middleware\EnsureCorrectMinistry;
 use App\Http\Middleware\SeeMinistry;
 use App\Http\Middleware\RedirectFromMinistryDashboard;
 use App\Http\Middleware\RedirectFromEvent;
+use App\Http\Middleware\RedirectFromChurch;
 use App\Http\Middleware\SetLocale;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -21,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
         'see.ministry' => SeeMinistry::class,
         'redirect.dashboard' => RedirectFromMinistryDashboard::class,
         'redirect.event' => RedirectFromEvent::class,
+        'redirect.church' => RedirectFromChurch::class,
         'set.locale' => SetLocale::class,
         ]);
     })

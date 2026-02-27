@@ -29,12 +29,6 @@ class Create extends Component
         $this->event->update(['active_invitation_link' => $value]);
     }
 
-    public function newChurchLink() {
-        $this->invitation_token = Str::random(20);
-        $this->event->update(['invitation_token' => $this->invitation_token]);
-        $this->modal('new-link')->close();
-    }
-
     public function addChurchLink() {
         return URL::signedRoute('invitation.church', [$this->ministry, $this->event, $this->event->invitation_token]);
     }

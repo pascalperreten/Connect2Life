@@ -22,10 +22,7 @@ class EventForm extends Form
 
     public $slug = '';
 
-    public $date_range = [];
-
-    public $start_date;
-    public $end_date;
+    public $invitation_token = null;
 
     #[Validate('required|integer|exists:ministries,id')]
     public $ministry_id;
@@ -34,10 +31,6 @@ class EventForm extends Form
         $this->event = $event;
         $this->name = $event->name;
         $this->city = $event->city;
-        $this->date_range = [
-            'start' => $event->start_date,
-            'end' => $event->end_date,
-        ];
     }
 
     protected function rules()
@@ -51,8 +44,6 @@ class EventForm extends Form
                 $unique,
             ],
             'ministry_id' => 'required|exists:ministries,id',
-            'date_range.start' => 'required|date',
-            'date_range.end' => 'required|date|after:date_range.start',
         ];
     }
 
@@ -60,7 +51,7 @@ class EventForm extends Form
     {
         return [
             'slug.unique' =>
-                'Diese Veranstaltung gibt es schon',
+                __('This event already exists'),
         ];
     }
 
@@ -68,12 +59,11 @@ class EventForm extends Form
         
         $this->ministry_id = auth()->user()->ministry_id;
         $this->slug = Str::slug($this->name . '-' . $this->city);
+        $this->invitation_token = Str::random(20);
         $this->validate();
-        $this->start_date = $this->date_range['start'];
-        $this->end_date = $this->date_range['end'];
 
         $event = Event::create(
-            $this->only(['name', 'city', 'start_date', 'end_date', 'ministry_id', 'slug'])
+            $this->only(['name', 'city', 'ministry_id', 'slug', 'invitation_token'])
         );
 
         ManageFollowUp::create([
@@ -93,12 +83,10 @@ class EventForm extends Form
         $this->ministry_id = auth()->user()->ministry_id;
         $this->slug = Str::slug($this->name . '-' . $this->city);
         $this->validate();
-        $this->start_date = $this->date_range['start'];
-        $this->end_date = $this->date_range['end'];
         
 
         $this->event->update(
-            $this->only(['name', 'city', 'start_date', 'end_date', 'slug'])
+            $this->only(['name', 'city', 'slug'])
         );
         
     }

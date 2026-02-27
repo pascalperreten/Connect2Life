@@ -17,7 +17,7 @@ class ChurchPolicy
 
     public function view(User $authUser, Church $church) {
         //dd($authUser->ministry->id, $church->event->ministry->id);
-        if(in_array($authUser->role, ['admin', 'editor']) && $authUser->ministry->id === $church->event->ministry->id) {
+        if(in_array($authUser->role, ['admin', 'editor', 'follow_up']) && $authUser->ministry->id === $church->event->ministry->id) {
             return true;
         } 
         

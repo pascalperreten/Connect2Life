@@ -87,7 +87,7 @@ new class extends Component {
 ?>
 
 <div>
-    <div class="space-y-6">
+    <form wire:submit.prevent="save" class="space-y-6">
         <flux:field>
             <flux:label>{{ __('Name Church') }}</flux:label>
 
@@ -130,20 +130,6 @@ new class extends Component {
                 @endforeach
 
         </flux:pillbox>
-        <flux:modal name="create-district" class="md:w-96 space-y-6">
-            <form wire:submit.prevent="createDistrict" class="space-y-6">
-                <div>
-                    <flux:heading size="lg">{{ __('Create new district') }}</flux:heading>
-                    <flux:text class="mt-2">{{ __('Enter the name of the new district.') }}</flux:text>
-                </div>
-                <flux:input autofocus wire:model="district_form.name" label="Name"
-                    placeholder="{{ __('District') }}" />
-                <div class="flex">
-                    <flux:spacer />
-                    <flux:button type="submit" variant="primary">{{ __('Create District') }}</flux:button>
-                </div>
-            </form>
-        </flux:modal>
 
         <flux:pillbox wire:key="languge" searchable wire:model.live="form.languages" label="{{ __('Languages') }}"
             placeholder="{{ __('Languages') }}"
@@ -156,20 +142,7 @@ new class extends Component {
                     </flux:pillbox.option>
                 @endforeach
         </flux:pillbox>
-        <flux:modal name="create-language" class="md:w-96 space-y-6">
-            <form wire:submit.prevent="createLanguage" class="space-y-6">
-                <div>
-                    <flux:heading size="lg">{{ __('Create new language') }}</flux:heading>
-                    <flux:text class="mt-2">{{ __('Enter the name of the new language.') }}</flux:text>
-                </div>
-                <flux:input autofocus wire:model="language_form.name" label="Name"
-                    placeholder="{{ __('Language') }}" />
-                <div class="flex">
-                    <flux:spacer />
-                    <flux:button type="submit" variant="primary">{{ __('Create') }}</flux:button>
-                </div>
-            </form>
-        </flux:modal>
+
         <flux:pillbox searchable wire:key="postal_code" wire:model.live="form.postal_codes"
             label="{{ __('Postal Codes') }}" placeholder="{{ __('Postal Codes') }}"
             description="{{ __('Please list all postal codes in which your church is active.') }}" multiple>
@@ -181,20 +154,6 @@ new class extends Component {
                 @endforeach
 
         </flux:pillbox>
-        <flux:modal name="create-postal-code" class="md:w-96 space-y-6">
-            <form wire:submit.prevent="createPostalCode" class="space-y-6">
-                <div>
-                    <flux:heading size="lg">{{ __('Create new postal code') }}</flux:heading>
-                    <flux:text class="mt-2">{{ __('Enter the name of the new postal code.') }}</flux:text>
-                </div>
-                <flux:input autofocus wire:model="postal_code_form.name" label="Name"
-                    placeholder="{{ __('Postal Code') }}" />
-                <div class="flex">
-                    <flux:spacer />
-                    <flux:button type="submit" variant="primary">{{ __('Create') }}</flux:button>
-                </div>
-            </form>
-        </flux:modal>
 
         <flux:field>
             <flux:label>{{ __('Website Url') }}</flux:label>
@@ -232,10 +191,53 @@ new class extends Component {
                     </flux:modal>
                 @endcan
             @else
-                <flux:button variant="primary" type="button" wire:click="save">{{ __('Create Church') }}
+                <flux:button variant="primary" type="submit">{{ __('Create Church') }}
                 </flux:button>
             @endif
         </div>
-    </div>
+    </form>
+
+    <flux:modal name="create-district" class="md:w-96 space-y-6">
+        <form wire:submit.prevent="createDistrict" class="space-y-6">
+            <div>
+                <flux:heading size="lg">{{ __('Create new district') }}</flux:heading>
+                <flux:text class="mt-2">{{ __('Enter the name of the new district.') }}</flux:text>
+            </div>
+            <flux:input autofocus wire:model="district_form.name" label="Name" placeholder="{{ __('District') }}" />
+            <div class="flex">
+                <flux:spacer />
+                <flux:button type="submit" variant="primary">{{ __('Create District') }}</flux:button>
+            </div>
+        </form>
+    </flux:modal>
+
+    <flux:modal name="create-language" class="md:w-96 space-y-6">
+        <form wire:submit.prevent="createLanguage" class="space-y-6">
+            <div>
+                <flux:heading size="lg">{{ __('Create new language') }}</flux:heading>
+                <flux:text class="mt-2">{{ __('Enter the name of the new language.') }}</flux:text>
+            </div>
+            <flux:input autofocus wire:model="language_form.name" label="Name" placeholder="{{ __('Language') }}" />
+            <div class="flex">
+                <flux:spacer />
+                <flux:button type="submit" variant="primary">{{ __('Create') }}</flux:button>
+            </div>
+        </form>
+    </flux:modal>
+
+    <flux:modal name="create-postal-code" class="md:w-96 space-y-6">
+        <form wire:submit.prevent="createPostalCode" class="space-y-6">
+            <div>
+                <flux:heading size="lg">{{ __('Create new postal code') }}</flux:heading>
+                <flux:text class="mt-2">{{ __('Enter the name of the new postal code.') }}</flux:text>
+            </div>
+            <flux:input autofocus wire:model="postal_code_form.name" label="Name"
+                placeholder="{{ __('Postal Code') }}" />
+            <div class="flex">
+                <flux:spacer />
+                <flux:button type="submit" variant="primary">{{ __('Create') }}</flux:button>
+            </div>
+        </form>
+    </flux:modal>
 
 </div>

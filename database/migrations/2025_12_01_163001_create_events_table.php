@@ -19,11 +19,8 @@ return new class extends Migration
             $table->string('city');
             $table->string('logo_path')->nullable();
             $table->string('logo_name')->nullable();
-            $table->date('start_date');
-            $table->date('end_date');
             $table->boolean('active_invitation_link')->default(false);
             $table->string('invitation_token')->nullable();
-            $table->unsignedBigInteger('decisions_without_contact_details')->default(0);
             $table->unique(['ministry_id', 'slug']);
             $table->timestamps();
         });

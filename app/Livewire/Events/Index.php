@@ -18,16 +18,18 @@ class Index extends Component
     use WithPagination;
 
     public Ministry $ministry;
+    public Event $event;
 
-    #[Url(except: '')]
-    public $create = '';
+    #[Url]
+    public $q = '';
 
     public $activeTab = 'events';
 
-    public function mount(Ministry $ministry) {
+    public function mount(Ministry $ministry, Event $event) {
         $this->ministry = $ministry;
+        $this->event = $event;
 
-        if($this->create) {
+        if($this->q === 'create') {
             $this->activeTab = 'create-event';
             
         }

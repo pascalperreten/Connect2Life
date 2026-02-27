@@ -15,13 +15,6 @@
             <flux:error name="form.city" />
         </flux:field>
 
-        <flux:field>
-            <flux:label>{{ __('Date') }}</flux:label>
-            <flux:date-picker mode="range" wire:model="form.date_range" start-day="1" locale="{{ app()->getLocale() }}"
-                placeholder="{{ __('select a daterange') }}" />
-            <flux:error name="form.date_range" />
-        </flux:field>
-
 
         <flux:error name="form.slug" />
 
