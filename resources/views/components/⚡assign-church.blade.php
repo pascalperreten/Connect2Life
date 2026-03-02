@@ -31,7 +31,7 @@ new class extends Component {
 ?>
 
 
-<flux:select wire:model.change="contact_church" variant="listbox" placeholder="Wähle eine Kirche aus">
+<flux:select wire:model.change="contact_church" variant="listbox" placeholder="{{ __('Select a church') }}">
 
     @if (count($this->event->churches) >= 1)
         @foreach ($this->event->churches as $church)

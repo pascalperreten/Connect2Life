@@ -76,7 +76,7 @@
         </flux:heading>
         <flux:card>
             <flux:table>
-                <flux:table.columns sticky class="bg-white dark:bg-zinc-900">
+                <flux:table.columns sticky class="bg-white dark:bg-zinc-700">
                     <flux:table.column>{{ __('Name') }}</flux:table.column>
                     <flux:table.column sortable :sorted="$this->sortBy === 'postal_codes.name'"
                         :direction="$this->sortDirection" wire:click="sort('postal_codes.name')">

@@ -75,7 +75,10 @@ class Edit extends Component
         if($this->logo) {
             $path = $this->logo->store('images', 'public');
             $name = $this->logo->getClientOriginalName();
-            Storage::disk('public')->delete($this->currentLogoPath);
+            
+            if($this->currentLogoPath) {
+                Storage::disk('public')->delete($this->currentLogoPath);
+            }
         } else {
             $path = $this->currentLogoPath;
             $name = $this->currentLogoName;
