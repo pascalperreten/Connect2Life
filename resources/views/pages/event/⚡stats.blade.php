@@ -29,7 +29,7 @@ new class extends Component {
         $this->contacts = $this->event->contacts->count();
         $this->contacts_decided = $this->event->contacts->where('decision', true)->count();
         $this->decisions = $this->decisions_without_contact_details + $this->contacts_decided;
-        $this->gospel_shares = $this->event->gospelShares->sum('number_of_gospel_shares') + $this->decisions_without_contact_details + $this->contacts;
+        $this->gospel_shares = $this->event->gospelShares->sum('number_of_gospel_shares');
         $this->contacts_not_decided = $this->event->contacts->where('decision', false)->count();
         $this->contacted = $this->event->contacts->whereNotNull('contacted_date')->where('invalid_contact_details', false)->count();
         $this->met = $this->event->contacts->where('met', true)->where('invalid_contact_details', false)->count();
