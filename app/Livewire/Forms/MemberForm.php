@@ -76,7 +76,7 @@ class MemberForm extends Form
         $this->events = $member->events()->pluck('events.id')->toArray();
     }
 
-    public function inviteChurch($ministry, $event) {
+    public function inviteChurch($event) {
         $this->event = $event;
 
         $this->validate();
@@ -95,7 +95,6 @@ class MemberForm extends Form
             'email' => $this->email,
             'phone' => $this->phone,
             'role' => $this->role,
-            'ministry_id' => $ministry->id,
             'church_id' => $church->id,
             'invitation_token' => Str::random(32),
         ]);
@@ -113,8 +112,10 @@ class MemberForm extends Form
 
     public function create($ministry, $church) {
 
+        $ministry_id = $ministry->id;
         if($church) {
             $this->church_name_rule = 'nullable|string|max:255';
+            $ministry_id = null;
         }
 
         $this->validate();
@@ -128,7 +129,7 @@ class MemberForm extends Form
             'email' => $this->email,
             'phone' => $this->phone,
             'role' => $this->role,
-            'ministry_id' => $ministry->id,
+            'ministry_id' => $ministry_id,
             'church_id' => $this->church_id,
             'invitation_token' => Str::random(32),
         ]);
@@ -159,7 +160,7 @@ class MemberForm extends Form
             $this->church_name_rule = 'nullable|string|max:255';
         }
 
-        if($this->member->ministry->user_id === $this->member->id) {
+        if($this->member->ministry && $this->member->ministry->user_id === $this->member->id) {
             $rules = collect($this->rules())
             ->only([
                 'first_name',
@@ -200,6 +201,7 @@ class MemberForm extends Form
             
         }
         $this->member->delete();
+        $this->member = null;
     }
 
 }

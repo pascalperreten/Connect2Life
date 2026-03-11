@@ -33,6 +33,7 @@ class ContactForm extends Form
     public $district = '';
     public array $postal_codes = [];
     public $postal_code = '';
+    public $unknown_postal_code = false;
     public string $age = '';
     public string $way_to_get_in_contact = '';
     public string $phone = '';
@@ -64,11 +65,15 @@ class ContactForm extends Form
 
     public function setContactForm($event) {
         $this->form_fields = ManageFollowUp::where('event_id', $event->id)->first();
+        if(!$this->form_fields->postal_code && $this->form_fields->district) {
+            $this->unknown_postal_code = true;
+        }
     }
     
     public function setContact(Contact $contact) {
         $this->contact = $contact;
         $this->name = $contact->name;
+        
         if($contact->gender) {
             $this->gender = $contact->gender;
         }
@@ -173,11 +178,11 @@ class ContactForm extends Form
             $validate[] = 'city';
         }
         else {
-            if ($this->form_fields->postal_code) {
+            if ($this->form_fields->postal_code && !$this->unknown_postal_code) {
                 $validate[] = 'postal_code';
             }
 
-            if($this->form_fields->district) {
+            if($this->form_fields->district && $this->unknown_postal_code) {
                 $validate[] = 'district';
             } 
         } 

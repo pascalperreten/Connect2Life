@@ -6,17 +6,17 @@ use Livewire\Component;
 use App\Models\User;
 use App\Models\Ministry;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Computed;
 use Flux\Flux;
 
 class Members extends Component
 {
     public Ministry $ministry;
-    public $members;
 
     public function mount(Ministry $ministry) {
         $this->ministry = $ministry;
         //$this->authorize('update', $this->ministry);
-        $this->getMembers();
+        //$this->getMembers();
 
         if(session()->has('success')) {
             Flux::toast(
@@ -27,10 +27,15 @@ class Members extends Component
         }
     }
 
-    #[On('updated')]
-    public function getMembers() {
-        $this->members = User::where('ministry_id', $this->ministry->id)->where('church_id', null)->get();
+    #[Computed]
+    public function members() {
+       return User::where('ministry_id', $this->ministry->id)->where('church_id', null)->get();
     }
+
+    // #[On('updated')]
+    // public function test() {
+    //     dd('hi');
+    // }
 
     public function render()
     {

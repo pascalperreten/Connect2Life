@@ -67,16 +67,13 @@ new class extends Component
     #[Computed]
     public function newContacts() {
         return Contact::query()
+        ->with(['postalCode', 'district', 'languages'])
+        ->withAggregate('postalCode', 'name')
+        ->withAggregate('district', 'name')
         ->where('foreign_city', false)
-        ->join('contact_postal_code', 'contacts.id', '=', 'contact_postal_code.contact_id')
-        ->join('postal_codes', 'postal_codes.id', '=', 'contact_postal_code.postal_code_id')
-        ->where('foreign_city', false)
-        ->join('contact_district', 'contacts.id', '=', 'contact_district.contact_id')
-        ->join('districts', 'districts.id', '=', 'contact_district.district_id')
         ->orderBy($this->sortBy, $this->sortDirection)
-        ->select('contacts.*')
-        ->where('contacts.assigned', false)
-        ->where('contacts.event_id', $this->event->id)
+        ->where('assigned', false)
+        ->where('event_id', $this->event->id)
         ->get();
     }
     public function setNewForeignContacts() {

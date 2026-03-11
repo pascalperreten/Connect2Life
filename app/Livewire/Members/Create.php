@@ -41,7 +41,7 @@ class Create extends Component
             
 
         } else {
-            $this->form->inviteChurch($this->ministry, $this->event);
+            $this->form->inviteChurch($this->event);
             
             $this->modal('invite-member')->close();
             Flux::toast(

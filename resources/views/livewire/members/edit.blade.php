@@ -1,9 +1,12 @@
-<div class="p-2">
-    <flux:modal.trigger name="edit-member-{{ $member->id }}">
-        <flux:icon.pencil-square class="cursor-pointer" />
-    </flux:modal.trigger>
+<div>
+    <div class="p-2" wire:key="member-{{ $member->id }}">
+        <flux:modal.trigger name="edit-member-{{ $member->id }}">
+            <flux:icon.pencil-square class="cursor-pointer" />
+        </flux:modal.trigger>
 
-    <flux:modal wire:key="{{ $member->id }}" name="edit-member-{{ $member->id }}" class="w-md">
+    
+    </div>
+    <flux:modal wire:key="edit-member-{{ $member->id }}" name="edit-member-{{ $member->id }}" class="w-md">
 
         <form wire:submit.prevent="update" class="space-y-6 text-left">
             <div class="space-y-4">
@@ -11,7 +14,7 @@
                     {{ $member->first_name . ' ' . $member->last_name }}
                     {{ app()->getLocale() === 'de' ? 'bearbeiten' : '' }}
                 </flux:heading>
-                @if ($member->ministry->owner->id === $member->id)
+                @if ($member->ministry && $member->ministry->owner->id === $member->id)
                     <flux:text>{{ __('This member created the ministry and cannot be deleted.') }}</flux:text>
                     <flux:separator />
                 @endif
@@ -46,7 +49,7 @@
                 <flux:input wire:model="form.phone" type="text" />
                 <flux:error name="form.phone" />
             </flux:field>
-            @if ($member->ministry->user_id !== $member->id)
+            @if ($member->ministry && $member->ministry->user_id !== $member->id || !$member->ministry)
                 <flux:field>
                     <flux:label>{{ __('Role') }}</flux:label>
                     <flux:select wire:model.live="form.role" variant="listbox" placeholder="Wähle die Funktion">
@@ -89,32 +92,33 @@
             <div class="flex gap-2">
                 <flux:spacer />
                 <flux:button type="submit" variant="primary">{{ __('Save') }}</flux:button>
-                @if ($member->ministry->owner->id !== $member->id)
+                @if ($member->ministry && $member->ministry->owner->id !== $member->id || !$member->ministry)
                     <flux:modal.trigger name="delete-member-{{ $member->id }}">
                         <flux:button type="button" variant="danger">{{ __('Delete') }}</flux:button>
                     </flux:modal.trigger>
-                    <flux:modal name="delete-member-{{ $member->id }}" class="text-start min-w-[22rem]">
-                        <div class="space-y-6">
-                            <div>
-                                <flux:heading size="lg">
-                                    {{ __('Would you like to delete this account?') }}
-                                </flux:heading>
-                                <flux:text class="mt-2">
-                                    {{ __('This action cannot be undone.') }}
-                                </flux:text>
-                            </div>
-                            <div class="flex gap-2">
-                                <flux:spacer />
-                                <flux:modal.close>
-                                    <flux:button variant="ghost">{{ __('Cancel') }}</flux:button>
-                                </flux:modal.close>
-                                <flux:button type="button" wire:click="delete" variant="danger">{{ __('Delete') }}
-                                </flux:button>
-                            </div>
-                        </div>
-                    </flux:modal>
+                    
                 @endif
             </div>
         </form>
+    </flux:modal>
+    <flux:modal wire:key="delete-member-{{ $member->id }}" name="delete-member-{{ $member->id }}" class="text-start min-w-[22rem]">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">
+                    {{ __('Would you like to delete this account?') }}
+                </flux:heading>
+                <flux:text class="mt-2">
+                    {{ __('This action cannot be undone.') }}
+                </flux:text>
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">{{ __('Cancel') }}</flux:button>
+                </flux:modal.close>
+                <flux:button type="button" wire:click="delete" variant="danger">{{ __('Delete') }}
+                </flux:button>
+            </div>
+        </div>
     </flux:modal>
 </div>

@@ -12,7 +12,7 @@
 
             <flux:table.rows>
                 @foreach ($this->members as $member)
-                    <flux:table.row wire:key="{{ $member->id }}">
+                    <flux:table.row wire:key="member-{{ $member->id }}">
                         <flux:table.cell>{{ $member->first_name . ' ' . $member->last_name }}
                         </flux:table.cell>
                         <flux:table.cell>
@@ -45,7 +45,7 @@
                         </flux:table.cell>
                         @can('update', $member)
                             <flux:table.cell class="text-end" inset="top-bottom">
-                                <livewire:members.edit :ministry="$this->ministry" :church="$this->church" :key="$member->id"
+                                <livewire:members.edit wire:key="member-{{ $member->id }}" :ministry="$this->ministry" :church="$this->church"
                                     :member="$member" />
                             </flux:table.cell>
                         @endcan

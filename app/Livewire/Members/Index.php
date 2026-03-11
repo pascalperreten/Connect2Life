@@ -21,16 +21,31 @@ class Index extends Component
 
     public $members;
 
-    public function mount(Event $event, Church $church) {
+    #[On('updated')]
+    public function refreshMembers() {
+        // refresh members list after update
+    }
+    #[On('deleted')]
+    public function showDeletedToast() {
+        // refresh members list after delete
+        Flux::toast(
+            heading: __('Account deleted'),
+            text: __('The account has been deleted successfully.'),
+            variant: 'success',
+        );
+    }
+
+    public function mount(Event $event, Church $church, $members) {
         $this->event = $event;
         $this->church = $church;
+        $this->members = $members;
     }
 
     public function setRole($string) {
         return Str::headline($string);
     }
     
-    #[On('updated')]
+  
     public function updated() {
         $this->dispatch('invitation_sent');
         Flux::toast(

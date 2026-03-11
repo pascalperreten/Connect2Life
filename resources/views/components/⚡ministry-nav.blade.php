@@ -17,7 +17,7 @@ new class extends Component {
 <div>
     <div class="flex">
         @can('update', $this->ministry)
-            <div x-data="{ open: false }" class="sticky hidden sm:block top-5 h-full border rounded p-2 mr-4">
+            <div x-data="{ open: false }" class="sticky hidden sm:block top-5 h-full border rounded p-2 mr-6">
                 <span class="text-center">
                     <flux:button x-on:click="open = true" class="p-4 cursor-pointer w-full" x-show="!open" size="xs"
                         variant="ghost" tooltip="{{ __('Open Sidebar') }}" icon="chevron-double-right"

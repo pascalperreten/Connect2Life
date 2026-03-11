@@ -18,13 +18,13 @@ class Edit extends Component
     use AuthorizesRequests;
 
     public bool $churchInvitation = false;
-    public User $member;
+    public ?User $member = null;
     public Ministry $ministry;
     public $events;
     public MemberForm $form;
-    public ?Church $church;
+    public ?Church $church = null;
 
-    public function mount(Church $church) {
+    public function mount(Church $church = null) {
         $this->church = $church;
         $this->form->church = $this->church;
         $this->form->setMember($this->member);
@@ -52,16 +52,22 @@ class Edit extends Component
         $this->modal('edit-member-' . $this->member->id)->close();
     }
 
+
     public function delete() {
-        $this->dispatch('updated');
         Flux::modals()->close();
-        Flux::toast(
-            heading: __('Account deleted'),
-            text: __('The account has been deleted successfully.'),
-            variant: 'success',
-        );
+        
         $this->form->delete();
+
+        $this->dispatch('deleted');
+
+        if($this->church->id) { 
+            
+        $this->redirect(route('churches.members', [$this->ministry, $this->church->event, $this->church]), navigate: true);
+        } else {
+            $this->redirect(route('ministry.members', [$this->ministry]), navigate: true);
+        }
     }
+
 
 
     public function render()

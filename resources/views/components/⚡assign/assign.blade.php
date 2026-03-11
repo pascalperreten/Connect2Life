@@ -78,12 +78,12 @@
             <flux:table>
                 <flux:table.columns sticky class="bg-white dark:bg-zinc-700">
                     <flux:table.column>{{ __('Name') }}</flux:table.column>
-                    <flux:table.column sortable :sorted="$this->sortBy === 'postal_codes.name'"
-                        :direction="$this->sortDirection" wire:click="sort('postal_codes.name')">
+                    <flux:table.column sortable :sorted="$this->sortBy === 'postal_code_name'"
+                        :direction="$this->sortDirection" wire:click="sort('postal_code_name')">
                         {{ __('Postal Code') }}
                     </flux:table.column>
-                    <flux:table.column sortable :sorted="$this->sortBy === 'districts.name'"
-                        :direction="$this->sortDirection" wire:click="sort('districts.name')">
+                    <flux:table.column sortable :sorted="$this->sortBy === 'district_name'"
+                        :direction="$this->sortDirection" wire:click="sort('district_name')">
                         {{ __('District') }}
                     </flux:table.column>
                     <flux:table.column>{{ __('Age') }}</flux:table.column>

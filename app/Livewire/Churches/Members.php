@@ -11,6 +11,7 @@ use Flux\Flux;
 use Illuminate\Support\Str;
 use App\Notifications\Invitation;
 use Livewire\Attributes\Validate;
+use Livewire\Attributes\Computed;
 
 class Members extends Component
 {

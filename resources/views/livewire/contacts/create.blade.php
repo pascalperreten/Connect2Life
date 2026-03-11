@@ -139,13 +139,13 @@
                                 <flux:error name="form.foreign_city" />
                             </flux:field>
                             @if ($this->form->foreign_city === null)
-                                <flux:input disabled placeholder="{{ __('Please select the field above') }}">
+                                <flux:input disabled placeholder="{{ __('Postal Code') }}">
                                 </flux:input>
                             @endif
 
                             @if (isset($this->form->foreign_city) && !$this->form->foreign_city)
-                                @if ($this->form->form_fields->postal_code)
-                                    <flux:field>
+                                @if ($this->form->form_fields->postal_code && !$this->form->unknown_postal_code)
+                                    <flux:field wire:key="postal_code_field">
                                         <flux:label>{{ __('Postal Code') }}<span class="text-red-500">*</span>
                                         </flux:label>
                                         <flux:input wire:key="postal_code" wire:model="form.postal_code"
@@ -153,8 +153,15 @@
                                         <flux:error name="form.postal_code" />
                                     </flux:field>
                                 @endif
-                                @if ($this->form->form_fields->district)
-                                    <flux:field>
+                                @if ($this->form->form_fields->postal_code && $this->form->form_fields->district)
+                                    <flux:field wire:key="unknown_postal_code_field" variant="inline">
+                                        <flux:checkbox wire:key="unknown_postal_code" wire:model.live="form.unknown_postal_code" />
+                                        <flux:label>{{ __('I don\'t know the postal code') }}</flux:label>
+                                    </flux:field>
+                                @endif
+                                
+                                @if ($this->form->form_fields->district && $this->form->unknown_postal_code)
+                                    <flux:field wire:key="district_field">
                                         <flux:label>{{ __('District') }}<span class="text-red-500">*</span>
                                         </flux:label>
                                         <flux:select placeholder="{{ __('Select a district') }}" searchable
@@ -183,7 +190,7 @@
                                 </flux:field>
                             @endif
                             @if ($this->form->form_fields->language)
-                                <flux:field>
+                                <flux:field wire:key="language_field">
                                     <flux:label>{{ __('Languages') }}<span class="text-red-500">*</span>
                                     </flux:label>
                                     <flux:pillbox wire:key="language" placeholder="{{ __('Select a language') }}"
@@ -201,7 +208,7 @@
                             @endif
 
                             @if ($this->form->form_fields->gender)
-                                <flux:field>
+                                <flux:field wire:key="gender_field">
                                     <flux:label>{{ __('Gender') }}<span class="text-red-500">*</span>
                                     </flux:label>
                                     <flux:radio.group wire:key="gender" wire:model="form.gender" variant="buttons"
