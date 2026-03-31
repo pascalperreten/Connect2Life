@@ -30,7 +30,7 @@
 
                     <div class="mt-3 flex flex-col gap-2">
 
-                        @if ($currentLogo)
+                        @if ($currentLogoUrl)
                             <flux:heading>
                                 {{ __('Current logo') }}
                             </flux:heading>
@@ -38,7 +38,7 @@
                                 <div class="flex justify-between items-center">
                                     <div class="h-10">
                                         <img class="max-w-full max-h-full"
-                                            src="{{ asset('storage/' . $currentLogoPath) }}">
+                                            src="{{ $currentLogoUrl }}">
                                     </div>
                                     <div class="flex justify-end">
                                         <flux:modal.trigger name="delete-logo">
