@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-6">
+<div class="flex flex-col gap-6 max-w-md mx-auto">
 
     <form wire:submit="save" class="flex flex-col gap-6">
 

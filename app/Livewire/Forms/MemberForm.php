@@ -8,6 +8,7 @@ use App\Models\Church;
 use App\Models\Event;
 use Illuminate\Support\Str;
 use App\Notifications\Invitation;
+use App\Notifications\MinistryInvitation;
 use Illuminate\Validation\Rule;
 
 class MemberForm extends Form
@@ -147,7 +148,11 @@ class MemberForm extends Form
         }
 
         // Logic to send invitation
-        $newMember->notify(new Invitation($newMember, $ministry, $event)->locale(app()->getLocale()));
+        if($church) {
+            $newMember->notify(new Invitation($newMember, $ministry, $event)->locale(app()->getLocale()));
+        } else {
+            $newMember->notify(new MinistryInvitation($newMember, $ministry)->locale(app()->getLocale()));
+        }
     }
 
     public function validateOnlyStep(array $fields)
@@ -189,6 +194,7 @@ class MemberForm extends Form
     public function delete() {
         if($this->member->church && $this->member->church->followUpContact->id === $this->member->id) {
             $newFollowUpContact;
+            $this->member->delete();
             if ($this->member->church->members()->where('role', 'ambassador')->exists()) {
                 $newFollowUpContact = $this->member->church->members->where('role', 'ambassador')->first()->id;
             } elseif($this->member->church->members()->where('role', 'pastor')->exists()) {
@@ -198,13 +204,11 @@ class MemberForm extends Form
             } else {
                 $newFollowUpContact = null;
             }
-            
                 $this->member->church->update([
                     'follow_up_contact' => $newFollowUpContact,
                 ]);
-            
         }
-        $this->member->delete();
+        
         $this->member = null;
     }
 

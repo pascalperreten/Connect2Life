@@ -22,7 +22,7 @@
                 </flux:navbar.item>
             </flux:navbar>
             <flux:separator class="mb-4" />
-            <div class="flex flex-col gap-6">
+            <div>
                 {{ $slot }}
             </div>
         </div>

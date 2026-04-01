@@ -7,12 +7,15 @@
 
 <body
     class="bg-[#FDFDFC] dark:bg-[#0a0a0a] flex flex-col text-[#1b1b18] p-6 lg:p-8 min-h-screen">
-    <header class="w-full lg:max-w-4xl max-w-[335px] mx-auto text-sm mb-6 not-has-[nav]:hidden flex justify-between">
-        <div>
-            <img src="{{ asset('favicon-96x96.png') }}" alt="Coditoch Logo" class="h-8 w-auto">
+    <header class="w-full sm:max-w-4xl mx-auto text-sm mb-6 not-has-[nav]:hidden sm:grid sm:grid-cols-3 flex justify-between">
+        <div class="justify-self-start">
+             <livewire:toggle-language />
+        </div>
+        <div class="justify-self-center hidden sm:block">
+            <img src="{{ asset('favicon-96x96.png') }}" alt="Coditoch Logo" class="h-10 w-auto">
         </div>
         @if (Route::has('login'))
-            <nav class="flex items-center justify-end gap-4">
+            <nav class="flex items-center justify-end gap-2 sm:gap-4">
                 @auth
                     <a href="{{ route('dashboard') }}" wire:navigate
                         class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal">
@@ -20,7 +23,7 @@
                     </a>
                 @else
                     <a href="{{ route('login') }}" wire:navigate
-                        class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] rounded-sm text-sm leading-normal">
+                        class="inline-block px-3 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] rounded-sm text-sm leading-normal">
                         {{ __('Log in') }}
                     </a>
 
@@ -52,6 +55,7 @@
     @if (Route::has('login'))
         <div class="h-14.5 hidden lg:block"></div>
     @endif
+    @fluxScripts
 </body>
 
 </html>

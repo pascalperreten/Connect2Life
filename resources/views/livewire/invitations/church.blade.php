@@ -1,4 +1,4 @@
-<div>
+<div class="max-w-md mx-auto mt-10">
     <form method="POST" action="{{ route('register.storeUserAndChurch', ['ministry' => $this->ministry, 'event' => $this->event, 'token' => $this->token]) }}" class="space-y-6">
         @csrf
         <div>

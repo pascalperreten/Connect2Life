@@ -89,65 +89,81 @@
                     <flux:table.column>{{ __('Age') }}</flux:table.column>
                     <flux:table.column>{{ __('Gender') }}</flux:table.column>
                     <flux:table.column>{{ __('Language') }}</flux:table.column>
+                    <flux:table.column>{{ __('Infos') }}</flux:table.column>
                     <flux:table.column></flux:table.column>
                 </flux:table.columns>
 
                 <flux:table.rows>
-
-                    @foreach ($this->newContacts() as $contact)
-                        <flux:table.row
-                            class="{{ isset($this->currentContact) && $this->currentContact->id === $contact->id ? 'bg-orange-700/10' : '' }}"
-                            wire:key="contact-{{ $contact->id }}">
-                            <flux:table.cell>
-                                {{ $contact->name }}</flux:table.cell>
-                            <flux:table.cell>
-                                @if (!$contact->postalCode()->exists())
-                                    {{ 'keine' }}
-                                @else
-                                    <a class="underline" target="_blank"
-                                        href="{{ $this->postalCodeUrl($contact) }}">{{ $contact->postalCode->first()->name ?? 'keine' }}</a>
-                                @endif
-                            </flux:table.cell>
-                            <flux:table.cell>
-                                @if (!$contact->district()->exists())
-                                    {{ 'keine' }}
-                                @else
-                                    <a target="_blank" class="underline"
-                                        href="{{ $this->districtUrl($contact) }}">{{ $contact->district->first()->name ?? 'keine' }}</a>
-                                @endif
-                            </flux:table.cell>
-                            <flux:table.cell>{{ $contact->age ?? 'keine' }}</flux:table.cell>
-                            <flux:table.cell>
-                                @if ($contact->gender)
-                                    @if ($contact->gender === 'male')
-                                        {{ __('Man') }}
+                    <div wire:poll.500ms>
+                        @foreach ($this->newContacts() as $contact)
+                            <flux:table.row
+                                class="{{ isset($this->currentContact) && $this->currentContact->id === $contact->id ? 'bg-orange-700/10' : '' }}"
+                                wire:key="contact-{{ $contact->id }}">
+                                <flux:table.cell>
+                                    {{ $contact->name }}</flux:table.cell>
+                                <flux:table.cell>
+                                    @if (!$contact->postalCode()->exists())
+                                        {{ 'keine' }}
                                     @else
-                                        {{ __('Woman') }}
+                                        <a class="underline" target="_blank"
+                                            href="{{ $this->postalCodeUrl($contact) }}">{{ $contact->postalCode->first()->name ?? 'keine' }}</a>
                                     @endif
-                                @else
-                                    {{ 'keine' }}
-                                @endif
-                            </flux:table.cell>
-                            <flux:table.cell>
-                                @foreach ($contact->languages as $key => $language)
-                                    @if (count($contact->languages) === 1)
-                                        {{ $language->translation->name }}
-                                    @elseif ($key === count($contact->languages) - 1)
-                                        {{ $language->translation->name }}
+                                </flux:table.cell>
+                                <flux:table.cell>
+                                    @if (!$contact->district()->exists())
+                                        {{ 'keine' }}
                                     @else
-                                        {{ $language->translation->name }},
+                                        <a target="_blank" class="underline"
+                                            href="{{ $this->districtUrl($contact) }}">{{ $contact->district->first()->name ?? 'keine' }}</a>
                                     @endif
-                                @endforeach
-                            </flux:table.cell>
+                                </flux:table.cell>
+                                <flux:table.cell>{{ $contact->age ?? 'keine' }}</flux:table.cell>
+                                <flux:table.cell>
+                                    @if ($contact->gender)
+                                        @if ($contact->gender === 'male')
+                                            {{ __('Man') }}
+                                        @else
+                                            {{ __('Woman') }}
+                                        @endif
+                                    @else
+                                        {{ 'keine' }}
+                                    @endif
+                                </flux:table.cell>
+                                <flux:table.cell>
+                                    @foreach ($contact->languages as $key => $language)
+                                        @if (count($contact->languages) === 1)
+                                            {{ $language->translation->name }}
+                                        @elseif ($key === count($contact->languages) - 1)
+                                            {{ $language->translation->name }}
+                                        @else
+                                            {{ $language->translation->name }},
+                                        @endif
+                                    @endforeach
+                                </flux:table.cell>
+                                <flux:table.cell>
+                                    @if ($contact->comments)
+                                        <flux:modal.trigger name="contact-{{ $contact->id }}-info">
+                                        <flux:button icon="information-circle" />
+                                        </flux:modal.trigger>
 
-                            <flux:table.cell align="end" class="flex gap-2">
-                                <flux:button wire:click="checkChurches({{ $contact->id }})">
-                                    {{ __('Churches') }}
-                                </flux:button>
-                                <livewire:assign-church :contact="$contact" :event="$event" :ministry="$ministry" />
-                            </flux:table.cell>
-                        </flux:table.row>
-                    @endforeach
+                                        <flux:modal name="contact-{{ $contact->id }}-info">
+                                            <flux:heading size="lg">{{ __('Comments') }}</flux:heading>
+                                            {{ $contact->comments }}
+                                        </flux:modal>
+                                    @endif
+                                    
+                                    
+                                </flux:table.cell>
+
+                                <flux:table.cell align="end" class="flex gap-2">
+                                    <flux:button wire:click="checkChurches({{ $contact->id }})">
+                                        {{ __('Churches') }}
+                                    </flux:button>
+                                    <livewire:assign-church :contact="$contact" :event="$event" :ministry="$ministry" />
+                                </flux:table.cell>
+                            </flux:table.row>
+                        @endforeach
+                    </div>
                 </flux:table.rows>
             </flux:table>
             <div class="flex">

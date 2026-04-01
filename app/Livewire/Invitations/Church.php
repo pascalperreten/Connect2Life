@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Actions\Fortify\CreateNewUserAndChurch;
 
-#[Layout('layouts.auth')]
+
 class Church extends Component
 {
     public $event;

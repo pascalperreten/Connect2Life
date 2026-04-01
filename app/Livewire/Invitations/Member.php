@@ -6,10 +6,11 @@ use Livewire\Component;
 use Livewire\Attributes\Layout;
 use App\Models\User;
 use App\Models\Church;
+use App\Models\Ministry;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Validate;
 
-#[Layout('components.layouts.auth')]
+#[Layout('components.layouts.app')]
 class Member extends Component
 {
     #[Validate('required|string|max:255')]
@@ -33,7 +34,7 @@ class Member extends Component
 
     public $user;
 
-    public function mount($token) {
+    public function mount(Ministry $ministry, $token) {
         $this->user = User::where('invitation_token', $token)->firstOrFail();
         $this->first_name = $this->user->first_name;
         $this->last_name = $this->user->last_name;
@@ -48,9 +49,8 @@ class Member extends Component
 
         $this->user->update($this->only(['password', 'invitation_token']));
 
+        $this->user->markEmailAsVerified();
         Auth::login($this->user);
-        $this->user->sendEmailVerificationNotification();
-
         
         if($this->user->church_id) {
             if ($this->user->church->members()->count() <= 1) {

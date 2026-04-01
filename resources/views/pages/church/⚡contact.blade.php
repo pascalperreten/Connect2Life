@@ -10,18 +10,30 @@ new class extends Component {
     public Event $event;
     public Church $church;
 
+    public $badgeNumber = '';
+
     public function mount(Ministry $ministry, Event $event, Church $church)
     {
         $this->ministry = $ministry;
         $this->event = $event;
         $this->church = $church;
+
+           
+        if(auth()->user()->role === 'church_member') {
+            $this->badgeNumber = auth()->user()->contacts->count();
+        } else {
+            $this->badgeNumber = $this->church->contacts()->count();
+        }
+
     }
+
+
 };
 ?>
 
 <div class="space-y-6">
     <div class="space-y-4">
-        <x-partials.header heading="{{ __('Contacts') }}" badgeText="{{ $this->church->contacts->count() }}"
+        <x-partials.header heading="{{ __('Contacts') }}" badgeText="{{ $this->badgeNumber }}"
             color="amber" />
 
         @can('view', $this->event)

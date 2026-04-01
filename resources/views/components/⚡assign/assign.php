@@ -160,4 +160,4 @@ new class extends Component
         }
         Flux::modal('assign-church')->close();
     }
-}
+};

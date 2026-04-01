@@ -44,11 +44,12 @@ class ContactAdded extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->greeting('Hallo ' . $this->church->followUpContact->first_name . ',')
-            ->line('Wir haben dir neue Kontakte hinzugefügt.')
-            ->action('Sieh dir jetzt deine neuen Kontakte an', url(route('churches.show', [$this->ministry, $this->event, $this->church])))
-            ->line('Bitte kümmere dich so schnell wie möglich um die neuen Kontakte!')
-            ->salutation('Viele Grüße, Dein ' . $this->ministry->name . ' Team');
+            ->subject(__('New Contacts Added'))
+            ->greeting(__('Hello') . ' ' . $this->church->followUpContact->first_name . ',')
+            ->line(__('We\'ve added some new contacts for you.'))
+            ->action(__('See your new contacts now'), url(route('churches.contacts', [$this->ministry, $this->event, $this->church])))
+            ->line(__('Please take care of the new contacts as soon as possible!'))
+            ->salutation(__('Best regards, the') . ' ' . $this->ministry->name . ' Team');
     }
 
     /**

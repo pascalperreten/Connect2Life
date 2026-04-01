@@ -30,8 +30,7 @@ new class extends Component {
 
 <div>
     <flux:radio.group wire:model="locale" variant="segmented">
-        <flux:radio wire:click="switchLanguage('de')" value="de" label="DE" />
-        <flux:radio wire:click="switchLanguage('en')" value="en" label="EN" />
+        <flux:radio class="w-10" wire:click="switchLanguage('de')" value="de" label="DE" />
+        <flux:radio class="w-10" wire:click="switchLanguage('en')" value="en" label="EN" />
     </flux:radio.group>
-
 </div>

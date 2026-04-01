@@ -121,7 +121,7 @@ new class extends Component {
                         wire:click="sort('church_id')">
                         {{ __('Church') }}</flux:table.column>
                 @endif
-                <flux:table.column>{{ __('Info') }}</flux:table.column>
+                <flux:table.column>{{ __('Infos') }}</flux:table.column>
                 @if (auth()->user()->role !== 'church_member')
                     <flux:table.column>{{ __('Follow-Up Person') }}</flux:table.column>
                 @endif
@@ -272,6 +272,14 @@ new class extends Component {
                                             <flux:text>{{ $contact->evangelist_name }}</flux:text>
                                         </div>
                                     @endif
+                                    @if ($contact->comments)
+                                        <flux:separator />
+                                        <div>
+                                            <flux:heading size="lg">{{ __('Comments') }}
+                                            </flux:heading>
+                                            <flux:text>{{ $contact->comments }}</flux:text>
+                                        </div>
+                                    @endif
 
                                 </div>
                             </flux:modal>
@@ -332,7 +340,7 @@ new class extends Component {
                     </flux:table.row>
                 @endforeach
                 @if (auth()->user()->role === 'church_member' && auth()->user()->contacts->count() === 0)
-                    <flux:table.row wire:key="no-contacts-{{ $contact->id }}">
+                    <flux:table.row wire:key="no-contacts-message">
                         <flux:table.cell colspan="100%">
                             <flux:text class="text-center italic">
                                 {{ __('No contacts have been assigned to you yet.') }}
