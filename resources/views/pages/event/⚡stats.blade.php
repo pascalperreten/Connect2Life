@@ -75,9 +75,15 @@ new class extends Component {
                 </div>
             </flux:card>
             <flux:card>
-                <div class="flex gap-4 items-center">
-                    <flux:heading size="lg">{{ __('Decisions') }}</flux:heading>
-                    <flux:badge color="orange" size="lg">{{ $this->decisions }}</flux:badge>
+                <div class="flex justify-between gap-4 items-center">
+                    <div class="flex gap-4 items-center">
+                        <flux:heading size="lg">{{ __('Decisions') }}</flux:heading>
+                        <flux:badge color="orange" size="lg">{{ $this->decisions }}</flux:badge>
+
+                    </div>
+                    <flux:button href="{{ route('events.decisions', [$this->ministry, $this->event]) }}"
+                            wire:navigate>
+                            {{ __('Entries') }}</flux:button>
                 </div>
                 <flux:chart wire:model="decisions_data" class="h-80 mt-6">
                     <flux:chart.svg>

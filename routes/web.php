@@ -116,6 +116,7 @@ Route::middleware(['set.locale'])->group(function () {
                 Route::livewire('manage', EventManage::class)->name('events.manage')->can('update', 'event');
                 Route::livewire('stats', 'pages::event.stats')->name('events.stats')->can('view', 'event');
                 Route::livewire('gospel-shares', 'pages::event.gospel-shares')->name('events.gospel-shares')->can('view', 'event');
+                Route::livewire('decisions', 'pages::event.decisions')->name('events.decisions')->can('view', 'event');
                 Route::livewire('details', EventEdit::class)->name('events.details')->can('update', 'event');
                 Route::livewire('contacts', ContactIndex::class)->name('contacts.index');
                 Route::livewire('contacts/details', 'pages::contact.details')->name('events.contacts.details');
