@@ -6,9 +6,9 @@ use App\Models\Ministry;
 
 new class extends Component {
     public $path;
-    public Ministry $ministry;
+    public ?Ministry $ministry = null;
 
-    public function mount(Ministry $ministry)
+    public function mount(?Ministry $ministry = null)
     {
         $this->ministry = $ministry;
         $this->path = $this->ministry->logo_path;

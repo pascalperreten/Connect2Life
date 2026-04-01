@@ -13,16 +13,16 @@
             <div class="justify-self-start">
                 <livewire:toggle-language />
             </div>
-            @if (!request()->is('settings/*'))
+            @if (request()->route() && request()->route()->parameter('ministry'))
                 <div class="justify-self-center">
-                    <livewire:logo :ministry="request()->route()->ministry" />
+                    <livewire:logo :ministry="request()->route()?->ministry" />
                 </div>
             @else
                 <div class="justify-self-center">
                     <flux:navbar>
-                        <flux:navbar.item :href="route('dashboard', auth()->user()->ministry)" icon="arrow-left"
+                        <flux:navbar.item :href="route('dashboard', auth()->user()->ministry)"
                             wire:navigate>
-                            {{ __('Back') }}
+                            {{ __('Dashboard') }}
                         </flux:navbar.item>
                     </flux:navbar>
                 </div>
