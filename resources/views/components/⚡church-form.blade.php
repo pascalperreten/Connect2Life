@@ -88,6 +88,18 @@ new class extends Component {
 
 <div>
     <form wire:submit.prevent="save" class="space-y-6">
+        @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->getMessages() as $field => $messages)
+                @foreach ($messages as $message)
+                    <li><strong>{{ $field }}:</strong> {{ $message }}</li>
+                @endforeach
+            @endforeach
+        </ul>
+    </div>
+@endif
+
         <flux:field>
             <flux:label>{{ __('Name Church') }}</flux:label>
 
@@ -131,7 +143,7 @@ new class extends Component {
 
         </flux:pillbox>
 
-        <flux:pillbox wire:key="languge" searchable wire:model.live="form.languages" label="{{ __('Languages') }}"
+        <flux:pillbox wire:key="language" searchable wire:model.live="form.languages" label="{{ __('Languages') }}"
             placeholder="{{ __('Languages') }}"
             description="{{ __('Please list all languages that you can support in the follow-up process.') }}"
             multiple>

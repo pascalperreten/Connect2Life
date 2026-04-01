@@ -22,7 +22,11 @@ class RedirectFromMinistryDashboard
             return redirect()->route('events.show', [$user->ministry, $user->events->first()]);
         }
         if(in_array($user->role, ['pastor', 'ambassador', 'church_member'])) {
-            return redirect()->route('churches.show', [$ministry, $user->church->events()->first(), $user->church]);
+            if ($user->church->street === '' ){
+                return redirect()->route('churches.manage', [$ministry, $user->church->events()->first(), $user->church]);
+            } else {
+                return redirect()->route('churches.show', [$ministry, $user->church->events()->first(), $user->church]);
+            }
         }
         return $next($request);
     }

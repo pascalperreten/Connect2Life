@@ -18,7 +18,11 @@ class RedirectFromEvent
         $ministry = $request->ministry;
         $user = auth()->user();
         if($user->church !== null) {
-            return redirect()->route('churches.show', [$ministry, $user->church->event, $user->church]);
+            if ($user->church->street === '' ){
+                return redirect()->route('churches.manage', [$ministry, $user->church->events()->first(), $user->church]);
+            } else {
+                return redirect()->route('churches.show', [$ministry, $user->church->events()->first(), $user->church]);
+            }
         }
         return $next($request);
     }

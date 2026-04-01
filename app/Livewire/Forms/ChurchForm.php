@@ -39,7 +39,7 @@ class ChurchForm extends Form
     public $postal_codes;
 
     #[Validate('nullable|url')]
-    public $website_url;
+    public $website_url = '';
 
     #[Validate('required|integer|exists:events,id')]
     public $event_id;
@@ -55,7 +55,7 @@ class ChurchForm extends Form
         $this->districts = $church->districts()->pluck('districts.id')->toArray();
         $this->languages = $church->languages()->pluck('languages.id')->toArray();
         $this->postal_codes = $church->postalCodes()->pluck('postal_codes.id')->toArray();
-        //$this->event_id = $church->event_id;
+        $this->event_id = $church->event_id;
     }
 
     public function create(Event $event) {
@@ -87,5 +87,6 @@ class ChurchForm extends Form
         $church->languages()->sync($this->languages);
         $church->districts()->sync($this->districts);
         $church->postalCodes()->sync($this->postal_codes);
+        
     }
 }
